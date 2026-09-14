@@ -1,6 +1,6 @@
 {
   "name": "linkdesk-plugin-editor",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "private": true,
   "type": "module",
   "description": "Monaco 编辑器（出厂预装，可卸载）——独立仓可自足构建：build 走 @linkdesk/plugin-sdk 的 npm 通道。monaco-editor + monaco-languageclient 自声明随 zip inline（E6#16 谁消费谁声明——壳零插件依赖），零 @src",
@@ -19,7 +19,7 @@
     "monaco-languageclient": "^10.7.0"
   },
   "devDependencies": {
-    "@linkdesk/plugin-sdk": "^0.1.14",
+    "@linkdesk/plugin-sdk": "^0.1.19",
     "@types/react": "^18.3.12",
     "jsdom": "^29.1.1",
     "jsonc-parser": "^3.3.1",
