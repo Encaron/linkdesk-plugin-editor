@@ -28,7 +28,7 @@
 
 | 分组 | 设置（节选） | 默认 |
 |---|---|---|
-| 文件 | `files.autoSave` —— off / afterDelay（空闲 1 秒自动存）/ onFocusChange（切走标签自动存） | `off` |
+| 文件 | `editor.autoSave` —— off / afterDelay（空闲 1 秒自动存）/ onFocusChange（切走标签自动存） | `off` |
 | 字体 | `editor.fontSize` / `editor.fontFamily` / `editor.fontWeight` / `editor.lineHeight` | 14 / Consolas / normal / 0(自动) |
 | 缩进 | `editor.tabSize` / `editor.insertSpaces` / `editor.detectIndentation` | 4 / 空格 / 自动检测 |
 | 显示 | `editor.wordWrap` / `editor.lineNumbers` / `editor.minimap.enabled` / `editor.renderWhitespace` / `editor.smoothScrolling` | off / on / 开 / selection / 开 |
@@ -49,7 +49,7 @@
 
 ## 小提示
 
-- **手动 vs 自动保存**：默认 `files.autoSave = off`（手动保存）；Hot Exit 只是「崩溃兜底」，不等于自动保存。想省事可把 `files.autoSave` 设成 `afterDelay` 或 `onFocusChange`。
+- **手动 vs 自动保存**：默认 `editor.autoSave = off`（手动保存）；Hot Exit 只是「崩溃兜底」，不等于自动保存。想省事可把 `editor.autoSave` 设成 `afterDelay` 或 `onFocusChange`。
 - 编辑器的整体观感（背景 / 文字色 / accent）**不属于它自己**——那是壳主题在管。它只负责代码这一亩三分地。
 
 ## 结构（给维护者）

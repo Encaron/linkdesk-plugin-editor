@@ -2,7 +2,7 @@
  * 保存与脏标记（E4V#40f/#40n/#40o，E6#87c 拆自 EditorTab.tsx）。
  *
  * 三条入口共用一条写盘路径：Ctrl+S（EditorView 经 onSave 回调）、切走标签自动保存
- * （files.autoSave = onFocusChange）、停止输入自动保存（= afterDelay，1s 计时器）。
+ * （editor.autoSave = onFocusChange）、停止输入自动保存（= afterDelay，1s 计时器）。
  * 脏→净的清理只有一处（markClean），保存成功与外部重载都走它——防两处漂移。
  */
 import { useCallback, useEffect, useRef } from "react";
@@ -47,7 +47,7 @@ export function useEditorSave(state: EditorTabState, t: TFunction, isActive: boo
   useEffect(() => {
     const wasActive = prevActiveRef.current;
     prevActiveRef.current = isActive;
-    lk.configuration.get("files.autoSave").then((autoSave) => {
+    lk.configuration.get("editor.autoSave").then((autoSave) => {
       if ((autoSave ?? "off") === "onFocusChange" && wasActive && !isActive && model && model.isDirty()) {
         handleSave();
       }
@@ -70,7 +70,7 @@ export function useEditorSave(state: EditorTabState, t: TFunction, isActive: boo
       trackDirtyFile(currentPath, v);
     }
     // E4V#40o——afterDelay 自动保存：每次变更重置 1s 计时器
-    const autoSave = await lk.configuration.get("files.autoSave") ?? "off";
+    const autoSave = await lk.configuration.get("editor.autoSave") ?? "off";
     if (autoSave === "afterDelay") {
       if (autoSaveTimerRef.current) clearTimeout(autoSaveTimerRef.current);
       autoSaveTimerRef.current = setTimeout(() => {
