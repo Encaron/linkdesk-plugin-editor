@@ -16,7 +16,7 @@ const EditorPlugin: React.FC<{ isActive?: boolean; tabId?: string; sourceId?: st
   // 不翻转，需点击事件补焦——分屏 Ctrl+S 保存错文件场景）。
   const { t } = useTranslation();
   const fp = propId;
-  if (!fp) return <div className="editor-container editor-empty">{t("编辑器（双击文件打开）")}</div>;
+  if (!fp) return <div>{t("编辑器（双击文件打开）")}</div>;
   if (fp.includes("|||")) { const [o, m] = fp.split("|||"); return <DiffEditor originalPath={o} modifiedPath={m} isActive={!!isActive} />; }
   return <EditorTab filePath={fp} isActive={!!isActive} tabId={tabId} />;
 };

@@ -48,15 +48,15 @@ const EditorTab: React.FC<EditorTabProps> = ({ filePath, isActive, tabId }) => {
   useEditorTabFocus(editorViewRef, tabId);
 
   if (state.loading) {
-    return <div className="editor-loading">{t("加载中…")}</div>;
+    return <div>{t("加载中…")}</div>;
   }
 
   if (state.error) {
-    return <div className="editor-error">{state.error}</div>;
+    return <div>{state.error}</div>;
   }
 
   if (!state.model) {
-    return <div className="editor-empty">{t("无法打开文件")}</div>;
+    return <div>{t("无法打开文件")}</div>;
   }
 
   // E4V#40q——编辑器选项（异步加载自 lk.configuration）

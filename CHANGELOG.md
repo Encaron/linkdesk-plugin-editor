@@ -1,5 +1,11 @@
 # 更新日志
 
+## v1.0.14（2026-09-20）
+
+- **删四处死类名引用**（E6#136 普查裁决）：`editor-container`／`editor-empty`／`editor-error`／`editor-loading` 在仓内 CSS 零定义、querySelector 式消费零处——SDK 新腿（0.1.44 自有类名引用悬空判据）指出它们是「挂了名但没有样式」的死引用（分属 `src/index.tsx`、`src/components/EditorTab.tsx`、`src/views/DiffEditor.tsx`）。删掉 className 里的死名，DOM 结构与渲染结果零变化，无功能变化。
+
+
+
 ## v1.0.13（2026-09-19）
 
 - **重打可复现**：@linkdesk/plugin-sdk 0.1.42 起 zip 目录条目时间戳钉死，同一份源码重打逐字节一致。插件内容零变化（仅 plugin.json 版本号随包更新）。
