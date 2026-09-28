@@ -1,5 +1,11 @@
 # 更新日志
 
+## v1.0.15（2026-09-28）
+
+- **删两条死命令声明**（M2 AI#28 尺子附带名单的复核裁决）：`editor.reopenClosedEditor`／`editor.compareFiles` 在 plugin.json 里挂着标题、却在**任何地方都没有 handler**——本仓源码零处 `registerCommand`，壳侧也没有这两条 id（"重新打开已关闭的编辑器"真正的实现是壳命令 `workbench.action.reopenClosedEditor`，Ctrl+Shift+T；"比较文件"那件事的实现是 file-tree 的 `file-tree.selectForCompare` ＋ `file-tree.compareWithSelected`）。这两条是编辑器内迁插件仓之前、命令 id 还是 `editor.*` 时代的残留。
+- **为什么不补 description 而是删**：声明会进命令索引（AI 选命令、快捷键列表都看得到）——给一条**永远不会执行成功**的命令补说明，等于在索引里立两块指向空地的路牌，比没有更糟。删掉之后索引少两条假条目；真实能力**一条没少**（两条都各自有活的等价命令，且都有快捷键/命令路径）。仓库外若有人把用户快捷键绑到这两条旧 id 上，它们在今天也同样从未生效过——删除不改变任何行为。
+- 版本 1.0.14 → **1.0.15**（PATCH）。无代码变化，纯 manifest 订正。
+
 ## v1.0.14（2026-09-20）
 
 - **删四处死类名引用**（E6#136 普查裁决）：`editor-container`／`editor-empty`／`editor-error`／`editor-loading` 在仓内 CSS 零定义、querySelector 式消费零处——SDK 新腿（0.1.44 自有类名引用悬空判据）指出它们是「挂了名但没有样式」的死引用（分属 `src/index.tsx`、`src/components/EditorTab.tsx`、`src/views/DiffEditor.tsx`）。删掉 className 里的死名，DOM 结构与渲染结果零变化，无功能变化。

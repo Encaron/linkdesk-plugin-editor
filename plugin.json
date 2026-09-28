@@ -2,7 +2,7 @@
   "$schema": "./node_modules/@linkdesk/plugin-sdk/schemas/plugin.schema.json",
   "pluginId": "editor",
   "name": "编辑器",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "icon": "resources/icon.svg",
   "description": "Monaco 代码编辑器——语法高亮、智能提示、Diff 对比",
   "author": "官方",
@@ -20,16 +20,6 @@
     "i18n": {
       "en": "i18n/en.json"
     },
-    "commands": [
-      {
-        "id": "editor.reopenClosedEditor",
-        "title": "重新打开已关闭的编辑器"
-      },
-      {
-        "id": "editor.compareFiles",
-        "title": "比较文件"
-      }
-    ],
     "configuration": {
       "title": "编辑器",
       "properties": {
