@@ -45,5 +45,12 @@
   "语言服务器正在启动——请稍候再试": "Language server is starting — please try again shortly",
   "语言支持不可用——无法跳转到定义": "Language support unavailable — cannot go to definition",
   "工作区 TypeScript 文件超过 {{max}} 个——只加载了前 {{max}} 个，其余文件的跳转与补全可能不完整": "Workspace has more than {{max}} TypeScript files — only the first {{max}} were loaded; go-to-definition and completion may be incomplete for the rest",
-  "工作区扫描失败——跨文件跳转与补全可能不完整：{{detail}}": "Workspace scan failed — cross-file go-to-definition and completion may be incomplete: {{detail}}"
+  "工作区扫描失败——跨文件跳转与补全可能不完整：{{detail}}": "Workspace scan failed — cross-file go-to-definition and completion may be incomplete: {{detail}}",
+  "Monaco 代码编辑器——语法高亮、智能提示、Diff 对比": "Monaco code editor — syntax highlighting, IntelliSense, and diff view",
+  "文件": "File",
+  "显示": "Display",
+  "编辑": "Edit",
+  "无法打开文件": "Cannot open file",
+  "保存失败：": "Save failed: ",
+  "加载中…": "Loading..."
 }

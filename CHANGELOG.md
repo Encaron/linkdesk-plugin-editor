@@ -1,5 +1,11 @@
 # 更新日志
 
+## v1.0.16（2026-09-30）
+
+- **自有翻译归位（E6#161「谁的仓谁译文」）**：本仓 7 条可渲染文案的英文译名住进**本仓字典** `i18n/en.json`（新增 7 条） ＋ `contributes.i18n` 声明——不再依赖 `lang-defaults` 代管：文案在本仓声明、译名却在别的仓的字典里，本仓加一条声明那只仓无从跟上（跨仓追不上）。译名取值：池里现成的照抄（同键同值 ⇒ 按 E6#161「同值覆盖不出声」规则运行时零变化），池里没有的 1 条新写。
+- **判据随 SDK 下发**：`@linkdesk/plugin-sdk` ^0.1.46 → **^0.1.61**——`npm run verify` 第 ⑧ 段「自有字典覆盖度」（manifest 渲染串缺口 🔴 / 源码 `t()` 缺口 ⚠️）由 `@linkdesk/plugin-sdk/own-dict-coverage` 判定（判据本体在 SDK，⛔ 不在本仓复制）。
+- **版本真源同步**：`package.json` 1.0.13（此前与 `plugin.json` 1.0.15 不同步）随本笔对齐到 **1.0.16**。
+
 ## v1.0.15（2026-09-28）
 
 - **删两条死命令声明**（M2 AI#28 尺子附带名单的复核裁决）：`editor.reopenClosedEditor`／`editor.compareFiles` 在 plugin.json 里挂着标题、却在**任何地方都没有 handler**——本仓源码零处 `registerCommand`，壳侧也没有这两条 id（"重新打开已关闭的编辑器"真正的实现是壳命令 `workbench.action.reopenClosedEditor`，Ctrl+Shift+T；"比较文件"那件事的实现是 file-tree 的 `file-tree.selectForCompare` ＋ `file-tree.compareWithSelected`）。这两条是编辑器内迁插件仓之前、命令 id 还是 `editor.*` 时代的残留。
