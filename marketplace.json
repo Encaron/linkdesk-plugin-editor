@@ -1,22 +1,28 @@
 {
   "version": "1",
-  "updatedAt": "2026-09-30T03:47:13.648Z",
+  "updatedAt": "2026-09-30T21:46:10.067Z",
   "plugins": [
     {
       "id": "editor",
       "name": "编辑器",
-      "version": "1.0.16",
+      "version": "1.0.17",
       "description": "Monaco 代码编辑器——语法高亮、智能提示、Diff 对比",
       "author": {
         "name": "官方"
       },
-      "icon": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.16/resources/icon.svg",
+      "icon": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.17/resources/icon.svg",
       "iconSource": "url",
-      "readmeUrl": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.16/README.md",
-      "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.16/editor.linkdesk-plugin",
-      "size": 8655235,
-      "publishedAt": "2026-09-30T03:47:13.648Z",
+      "readmeUrl": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.17/README.md",
+      "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.17/editor.linkdesk-plugin",
+      "size": 8653942,
+      "publishedAt": "2026-09-30T21:46:10.067Z",
       "versions": [
+        {
+          "version": "1.0.17",
+          "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.17/editor.linkdesk-plugin",
+          "publishedAt": "2026-09-30T21:46:10.067Z",
+          "changelog": "- **安装包瘦身**：包内更新日志只带最近 5 版（更早的更新记录仍在本插件仓库里）——由 SDK 自动施加，用户无需任何操作。"
+        },
         {
           "version": "1.0.16",
           "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.16/editor.linkdesk-plugin",
@@ -44,20 +50,17 @@
         {
           "version": "1.0.12",
           "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.12/editor.linkdesk-plugin",
-          "publishedAt": "2026-09-17T13:39:01.425Z",
-          "changelog": "- **设置键带上归属**（E6#111n-2）：`files.autoSave` → `editor.autoSave`——本键原住在 `files.*` 公共前缀下（与 `file-tree` 的 `files.exclude` 同族），但它由本插件声明与消费，前缀对不上归属。本版起归入本插件命名空间，\n  词干一字未动（值域 `off` / `afterDelay` / `onFocusChange` 与默认值 `off` 全部不变）\n- **老用户的值不会丢**：宿主侧的改名迁移带 `next in schema` 门禁（新名没被声明就不搬），1.42 那一轮因此**正确地跳过**了本键（当时本仓还声明着旧名）。\n  本版发布后新名进宿主 schema，**下一次启动自动把用户已存的旧值搬到新名下**——无需任何手动操作\n- 无功能变化——本版只为让设置键与插件身份对齐"
+          "publishedAt": "2026-09-17T13:39:01.425Z"
         },
         {
           "version": "1.0.11",
           "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.11/editor.linkdesk-plugin",
-          "publishedAt": "2026-09-14T18:08:42.440Z",
-          "changelog": "- **分发件补上 MIT LICENSE**：`LICENSE` 早就在本仓里（E6#108g 那批加的），但**已发布的那版产物比它早** ⇒ 用户手上那份 zip 里一直没有版权声明。MIT 要求「副本里带声明」，而 zip 才是用户真正拿到的那份\n- **不再夹带仓库面文件**：`@linkdesk/plugin-sdk` 升到 0.1.19（^0.1.14 → ^0.1.19）——旧 SDK 的打包通道会把 `marketplace.json` / `scripts/ci-verify.mjs` / `AGENTS.md` 这类**仓库面文件**一起装进 zip（那是给仓库看的，不是给用户看的），0.1.19 的排除表已覆盖\n- 无功能变化——本版只为让「用户拿到的产物」与仓库对齐"
+          "publishedAt": "2026-09-14T18:08:42.440Z"
         },
         {
           "version": "1.0.10",
           "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.10/editor.linkdesk-plugin",
-          "publishedAt": "2026-09-14T02:35:51.977Z",
-          "changelog": "- 源码迁入独立仓（E6#99，L7 第 7.2 轮）——从壳仓 `Encaron/linkdesk` 抽出本插件子树，历史全保（hash 变）\n- 随包 `plugin.json` 显式声明 `pluginId`（E6#98g）：插件身份不再靠目录名兜底，独立仓构建出的包名与身份稳定\n- `$schema` 改指本仓 `node_modules/@linkdesk/plugin-sdk`（脱离壳仓后原相对路径指到仓外，编辑器补全/校验会失效）"
+          "publishedAt": "2026-09-14T02:35:51.977Z"
         }
       ]
     }
