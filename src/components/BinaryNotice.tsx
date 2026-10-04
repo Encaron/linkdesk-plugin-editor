@@ -4,40 +4,48 @@
  * 判定归壳（`lk.encoding.isBinary`，一处真相源），**呈现归被兜底的插件**——本块是 editor 自绘的
  * 私有视图件（D10：⛔ 不预造 `@linkdesk/ui` 共享件，第二个真实消费者出现才共享）。
  *
- * 两颗钮一律**特性探测接线**，面/命令不在就隐藏（⛔ 不留死钮，与 E17/E39 同律）：
- *   - 「打开方式…」——T2 的选择器命令（`file-tree.openWith`）尚未落地 ⇒ 命令不存在 ⇒ 隐藏；
- *     T2 落地后此处零改动自动显形。首参 = 文件路径。
+ * 两颗钮一律**探测接线**，面/命令不在就隐藏（⛔ 不留死钮，与 E17/E39 同律）：
  *   - 「在市场搜索阅读器」——市场插件被卸载/禁用 ⇒ 隐藏。
+ *   - 「打开方式…」——见 `OPEN_WITH_WIRED`：接线留着，但宿主侧动作**尚未实现**，故先不显示。
  */
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const lk = () => window.linkdesk;
 
-/** T2 选择器命令 id（file-tree 提供）——未落地前探测不到 ⇒ 按钮隐藏 */
+/** 选择器命令 id（file-tree 提供）。首参 = 文件路径——该接口对面已固定。 */
 const OPEN_WITH_COMMAND = "file-tree.openWith";
+
+/**
+ * 「打开方式…」是否上屏——**宿主侧动作落地前必须为 false**。
+ *
+ * 🔴 为什么不是一个「命令在不在」的探测（实测读数，2026-10-05 dev）：
+ *   `commands.getCommands()` 里**每一条插件声明的命令**都带 `placeholder: true`——那是
+ *   「元数据由 loader 注册、执行转发给池」的**路由标记**，不是「有没有实现」的判据
+ *   （`file-tree.openFile` / `file-tree.revealInOS` 这些**真能跑**的命令同样是 true）。
+ *   而 `file-tree.openWith` 今天在 file-tree 的 manifest 里挂着、实现未接（描述自陈
+ *   「占位命令——未接实现，调用无效果」）⇒ 探测只会得到一个**点了没反应的空钮**。
+ *   ⇒ 宿主未实现前，唯一诚实的表达就是不显示它。
+ * 🔁 宿主侧实现落地（file-tree 真接上 `file-tree.openWith`）后：把这行翻成 true 并发一版本插件。
+ */
+const OPEN_WITH_WIRED = false;
 /** 市场插件 id——揭示其侧栏容器（与点图标栏同一路径） */
 const MARKETPLACE_PLUGIN_ID = "marketplace";
 
 export default function BinaryNotice({ filePath }: { filePath: string }) {
   const { t } = useTranslation();
-  const [canOpenWith, setCanOpenWith] = useState(false);
   const [canSearchMarket, setCanSearchMarket] = useState(false);
 
   const fileName = useMemo(() => filePath.split(/[\\/]/).pop() || filePath, [filePath]);
 
-  // 探面：命令在不在 / 市场插件在不在（旧壳或插件缺席 ⇒ 按钮隐藏，不留死钮）
+  // 探面：市场插件在不在（旧壳或插件缺席 ⇒ 按钮隐藏，不留死钮）
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
-        const cmds = await lk().commands?.getCommands?.();
-        if (!cancelled) setCanOpenWith(!!cmds?.some((c) => c.id === OPEN_WITH_COMMAND));
-      } catch { /* 探测失败 = 面不在 */ }
-      try {
         const list = await lk().pluginManager?.list?.();
         if (!cancelled) setCanSearchMarket(!!list?.some((p) => p.pluginId === MARKETPLACE_PLUGIN_ID));
-      } catch { /* 同上 */ }
+      } catch { /* 探测失败 = 面不在 */ }
     })();
     return () => { cancelled = true; };
   }, []);
@@ -72,7 +80,7 @@ export default function BinaryNotice({ filePath }: { filePath: string }) {
         {t("「{{name}}」是二进制文件，以文本打开只会得到乱码。", { name: fileName })}
       </div>
       <div className="editor-binary-notice-actions">
-        {canOpenWith && (
+        {OPEN_WITH_WIRED && (
           <button type="button" className="editor-binary-notice-btn primary" onClick={handleOpenWith}>
             {t("打开方式…")}
           </button>
