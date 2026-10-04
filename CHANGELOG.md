@@ -1,5 +1,11 @@
 # 更新日志
 
+## v1.0.18（2026-10-04）
+
+- **配置项行名短名**（配置项短名案）：设置页「编辑器」组 26 条设置此前行名只能裸显英文配置键（`editor.autoSave` 这类），现补声明式短名——如 `autoSave` → 「自动保存」、`fontSize` → 「字号」、`wordWrap` → 「自动换行」、`cursorStyle` → 「光标样式」。中文原文即 i18n key，英文界面走本仓 i18n 译名。
+- **枚举下拉不再裸显英文值**：8 组枚举（`autoSave`／`fontWeight`／`wordWrap`／`lineNumbers`／`renderWhitespace`／`cursorStyle`／`cursorBlinking`／`autoClosingBrackets`）此前无 `enumDescriptions`，下拉直接显 `onFocusChange`、`wordWrapColumn` 这类英文值；现补对象形态显示名（「延迟自动」「按列宽」等）＋英译。`fontWeight` 的 100–900 数值档按原样显示，不另起名。
+- 第三方存量声明不受影响：无短名者照旧回退显配置键。
+
 ## v1.0.17（2026-10-01）
 
 - **安装包瘦身**：包内更新日志只带最近 5 版（更早的更新记录仍在本插件仓库里）——由 SDK 自动施加，用户无需任何操作。
