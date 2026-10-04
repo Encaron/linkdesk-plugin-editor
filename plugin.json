@@ -2,7 +2,7 @@
   "$schema": "./node_modules/@linkdesk/plugin-sdk/schemas/plugin.schema.json",
   "pluginId": "editor",
   "name": "编辑器",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "icon": "resources/icon.svg",
   "description": "Monaco 代码编辑器——语法高亮、智能提示、Diff 对比",
   "author": "官方",
@@ -323,183 +323,228 @@
     "fileAssociations": [
       {
         "extension": "ts",
-        "displayName": "TypeScript"
+        "displayName": "TypeScript",
+        "role": "text-fallback"
       },
       {
         "extension": "tsx",
-        "displayName": "TypeScript React"
+        "displayName": "TypeScript React",
+        "role": "text-fallback"
       },
       {
         "extension": "js",
-        "displayName": "JavaScript"
+        "displayName": "JavaScript",
+        "role": "text-fallback"
       },
       {
         "extension": "jsx",
-        "displayName": "JavaScript React"
+        "displayName": "JavaScript React",
+        "role": "text-fallback"
       },
       {
         "extension": "mjs",
-        "displayName": "JavaScript ES Module"
+        "displayName": "JavaScript ES Module",
+        "role": "text-fallback"
       },
       {
         "extension": "cjs",
-        "displayName": "JavaScript CommonJS"
+        "displayName": "JavaScript CommonJS",
+        "role": "text-fallback"
       },
       {
         "extension": "json",
-        "displayName": "JSON"
+        "displayName": "JSON",
+        "role": "text-fallback"
       },
       {
         "extension": "jsonc",
-        "displayName": "JSON with Comments"
+        "displayName": "JSON with Comments",
+        "role": "text-fallback"
       },
       {
         "extension": "html",
-        "displayName": "HTML"
+        "displayName": "HTML",
+        "role": "text-fallback"
       },
       {
         "extension": "htm",
-        "displayName": "HTML"
+        "displayName": "HTML",
+        "role": "text-fallback"
       },
       {
         "extension": "css",
-        "displayName": "CSS"
+        "displayName": "CSS",
+        "role": "text-fallback"
       },
       {
         "extension": "scss",
-        "displayName": "SCSS"
+        "displayName": "SCSS",
+        "role": "text-fallback"
       },
       {
         "extension": "less",
-        "displayName": "Less"
+        "displayName": "Less",
+        "role": "text-fallback"
       },
       {
         "extension": "md",
-        "displayName": "Markdown"
+        "displayName": "Markdown",
+        "role": "text-fallback"
       },
       {
         "extension": "mdx",
-        "displayName": "MDX"
+        "displayName": "MDX",
+        "role": "text-fallback"
       },
       {
         "extension": "py",
-        "displayName": "Python"
+        "displayName": "Python",
+        "role": "text-fallback"
       },
       {
         "extension": "rs",
-        "displayName": "Rust"
+        "displayName": "Rust",
+        "role": "text-fallback"
       },
       {
         "extension": "c",
-        "displayName": "C"
+        "displayName": "C",
+        "role": "text-fallback"
       },
       {
         "extension": "h",
-        "displayName": "C Header"
+        "displayName": "C Header",
+        "role": "text-fallback"
       },
       {
         "extension": "cpp",
-        "displayName": "C++"
+        "displayName": "C++",
+        "role": "text-fallback"
       },
       {
         "extension": "hpp",
-        "displayName": "C++ Header"
+        "displayName": "C++ Header",
+        "role": "text-fallback"
       },
       {
         "extension": "go",
-        "displayName": "Go"
+        "displayName": "Go",
+        "role": "text-fallback"
       },
       {
         "extension": "java",
-        "displayName": "Java"
+        "displayName": "Java",
+        "role": "text-fallback"
       },
       {
         "extension": "xml",
-        "displayName": "XML"
+        "displayName": "XML",
+        "role": "text-fallback"
       },
       {
         "extension": "svg",
-        "displayName": "SVG"
+        "displayName": "SVG",
+        "role": "text-fallback"
       },
       {
         "extension": "yaml",
-        "displayName": "YAML"
+        "displayName": "YAML",
+        "role": "text-fallback"
       },
       {
         "extension": "yml",
-        "displayName": "YAML"
+        "displayName": "YAML",
+        "role": "text-fallback"
       },
       {
         "extension": "toml",
-        "displayName": "TOML"
+        "displayName": "TOML",
+        "role": "text-fallback"
       },
       {
         "extension": "sh",
-        "displayName": "Shell"
+        "displayName": "Shell",
+        "role": "text-fallback"
       },
       {
         "extension": "bash",
-        "displayName": "Bash"
+        "displayName": "Bash",
+        "role": "text-fallback"
       },
       {
         "extension": "sql",
-        "displayName": "SQL"
+        "displayName": "SQL",
+        "role": "text-fallback"
       },
       {
         "extension": "lua",
-        "displayName": "Lua"
+        "displayName": "Lua",
+        "role": "text-fallback"
       },
       {
         "extension": "php",
-        "displayName": "PHP"
+        "displayName": "PHP",
+        "role": "text-fallback"
       },
       {
         "extension": "rb",
-        "displayName": "Ruby"
+        "displayName": "Ruby",
+        "role": "text-fallback"
       },
       {
         "extension": "swift",
-        "displayName": "Swift"
+        "displayName": "Swift",
+        "role": "text-fallback"
       },
       {
         "extension": "kt",
-        "displayName": "Kotlin"
+        "displayName": "Kotlin",
+        "role": "text-fallback"
       },
       {
         "extension": "dart",
-        "displayName": "Dart"
+        "displayName": "Dart",
+        "role": "text-fallback"
       },
       {
         "extension": "diff",
-        "displayName": "Diff"
+        "displayName": "Diff",
+        "role": "text-fallback"
       },
       {
         "extension": "patch",
-        "displayName": "Patch"
+        "displayName": "Patch",
+        "role": "text-fallback"
       },
       {
         "extension": "bat",
-        "displayName": "Batch"
+        "displayName": "Batch",
+        "role": "text-fallback"
       },
       {
         "extension": "cmd",
-        "displayName": "Batch"
+        "displayName": "Batch",
+        "role": "text-fallback"
       },
       {
         "extension": "ini",
-        "displayName": "INI"
+        "displayName": "INI",
+        "role": "text-fallback"
       },
       {
         "extension": "cfg",
-        "displayName": "Config"
+        "displayName": "Config",
+        "role": "text-fallback"
       },
       {
         "extension": "txt",
-        "displayName": "Text"
+        "displayName": "Text",
+        "role": "text-fallback"
       },
       {
         "extension": "log",
-        "displayName": "Log"
+        "displayName": "Log",
+        "role": "text-fallback"
       }
     ]
   }
