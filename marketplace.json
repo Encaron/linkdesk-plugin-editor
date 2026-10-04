@@ -1,22 +1,28 @@
 {
   "version": "1",
-  "updatedAt": "2026-10-04T17:56:50.750Z",
+  "updatedAt": "2026-10-04T18:23:20.792Z",
   "plugins": [
     {
       "id": "editor",
       "name": "编辑器",
-      "version": "1.0.19",
+      "version": "1.0.20",
       "description": "Monaco 代码编辑器——语法高亮、智能提示、Diff 对比",
       "author": {
         "name": "官方"
       },
-      "icon": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.19/resources/icon.svg",
+      "icon": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.20/resources/icon.svg",
       "iconSource": "url",
-      "readmeUrl": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.19/README.md",
-      "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.19/editor.linkdesk-plugin",
-      "size": 8656522,
-      "publishedAt": "2026-10-04T17:56:50.750Z",
+      "readmeUrl": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.20/README.md",
+      "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.20/editor.linkdesk-plugin",
+      "size": 8655972,
+      "publishedAt": "2026-10-04T18:23:20.792Z",
       "versions": [
+        {
+          "version": "1.0.20",
+          "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.20/editor.linkdesk-plugin",
+          "publishedAt": "2026-10-04T18:23:20.792Z",
+          "changelog": "- **不显示点了没反应的入口**：上一版给二进制文件配了「打开方式…」入口，但宿主侧那个动作还没做出来——按钮点了什么也不会发生。这一版先把它收起来（接线留着，动作到位就放出来）。\n- 二进制文件的说明文字与「在市场搜索阅读器」入口不受影响；文本文件照旧。"
+        },
         {
           "version": "1.0.19",
           "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.19/editor.linkdesk-plugin",
@@ -44,8 +50,7 @@
         {
           "version": "1.0.15",
           "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.15/editor.linkdesk-plugin",
-          "publishedAt": "2026-09-28T17:17:21.496Z",
-          "changelog": "- **删两条死命令声明**（M2 AI#28 尺子附带名单的复核裁决）：`editor.reopenClosedEditor`／`editor.compareFiles` 在 plugin.json 里挂着标题、却在**任何地方都没有 handler**——本仓源码零处 `registerCommand`，壳侧也没有这两条 id（\"重新打开已关闭的编辑器\"真正的实现是壳命令 `workbench.action.reopenClosedEditor`，Ctrl+Shift+T；\"比较文件\"那件事的实现是 file-tree 的 `file-tree.selectForCompare` ＋ `file-tree.compareWithSelected`）。这两条是编辑器内迁插件仓之前、命令 id 还是 `editor.*` 时代的残留。\n- **为什么不补 description 而是删**：声明会进命令索引（AI 选命令、快捷键列表都看得到）——给一条**永远不会执行成功**的命令补说明，等于在索引里立两块指向空地的路牌，比没有更糟。删掉之后索引少两条假条目；真实能力**一条没少**（两条都各自有活的等价命令，且都有快捷键/命令路径）。仓库外若有人把用户快捷键绑到这两条旧 id 上，它们在今天也同样从未生效过——删除不改变任何行为。\n- 版本 1.0.14 → **1.0.15**（PATCH）。无代码变化，纯 manifest 订正。"
+          "publishedAt": "2026-09-28T17:17:21.496Z"
         },
         {
           "version": "1.0.14",
