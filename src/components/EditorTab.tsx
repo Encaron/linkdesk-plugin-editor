@@ -20,6 +20,7 @@ import EditorView from "../views/EditorView";
 import type { EditorViewHandle } from "../views/EditorView";
 import EditorStatusBar from "./EditorStatusBar";
 import EditorBreadcrumb from "./EditorBreadcrumb";
+import BinaryNotice from "./BinaryNotice";
 import type { EditorTabProps } from "./EditorTab/types";
 import { useEditorTabState } from "./EditorTab/useEditorTabState";
 import { useEditorStatus } from "./EditorTab/useEditorStatus";
@@ -57,6 +58,17 @@ const EditorTab: React.FC<EditorTabProps> = ({ filePath, isActive, tabId }) => {
 
   if (!state.model) {
     return <div>{t("无法打开文件")}</div>;
+  }
+
+  // T1 二进制守卫——壳判定命中：不挂 Monaco（内容没解码，挂上去就是一片乱码），改画提示块。
+  // 提示块自带面包屑；状态栏（行:列/编码/语言）对二进制文件无意义，一并省掉。
+  if (state.model.isBinary) {
+    return (
+      <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+        <EditorBreadcrumb filePath={state.model.filePath} />
+        <BinaryNotice filePath={state.model.filePath} />
+      </div>
+    );
   }
 
   // E4V#40q——编辑器选项（异步加载自 lk.configuration）

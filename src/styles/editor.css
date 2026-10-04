@@ -69,3 +69,62 @@
 .editor-breadcrumb-segment:hover {
   color: var(--text-primary);
 }
+
+/* T1 二进制守卫——「此文件无法作为文本显示」提示块（替代 Monaco 区域；自有件，非共享 UI 组件） */
+.editor-binary-notice {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px;
+  text-align: center;
+  background: var(--bg-window);
+  user-select: none;
+}
+
+.editor-binary-notice-title {
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+}
+
+.editor-binary-notice-desc {
+  color: var(--text-muted);
+  font-size: var(--font-size-2xs);
+  max-width: 480px;
+  line-height: 1.6;
+}
+
+.editor-binary-notice-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.editor-binary-notice-btn {
+  padding: 3px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-size: var(--font-size-2xs);
+  cursor: pointer;
+}
+
+.editor-binary-notice-btn:hover {
+  border-color: var(--accent);
+}
+
+.editor-binary-notice-btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--text-on-accent);
+}
+
+.editor-binary-notice-btn.primary:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}

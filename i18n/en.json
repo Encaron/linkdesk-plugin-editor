@@ -104,5 +104,10 @@
   "编辑": "Edit",
   "无法打开文件": "Cannot open file",
   "保存失败：": "Save failed: ",
+  "此文件无法作为文本显示": "This file can't be shown as text",
+  "「{{name}}」是二进制文件，以文本打开只会得到乱码。": "“{{name}}” is a binary file — opening it as text would only show garbled characters.",
+  "打开方式…": "Open with…",
+  "在市场搜索阅读器": "Find a viewer in the marketplace",
+  "「{{name}}」无法作为文本显示 —— 可右键选择打开方式或在市场搜索阅读器": "“{{name}}” can't be shown as text — right-click to choose how to open it, or find a viewer in the marketplace",
   "加载中…": "Loading..."
 }

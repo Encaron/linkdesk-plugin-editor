@@ -33,6 +33,9 @@ export function useEditorSave(state: EditorTabState, t: TFunction, isActive: boo
 
   const handleSave = useCallback(async () => {
     if (!model) return;
+    // T1 二进制守卫：内容没解码（_value 是空串），回写等于把原文件抹平——直接不保存。
+    // 提示块已顶上解释；此处是最后一道闸（防将来别处又给二进制 model 接上保存入口）。
+    if (model.isBinary) return;
     try {
       await model.save();
       model.markSaved();

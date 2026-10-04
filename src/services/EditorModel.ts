@@ -24,6 +24,9 @@ export class EditorModel {
   /** 当前语言——随 setFilePath 从新扩展名重派生 */
   language: string;
   readonly encoding: string;
+  /** T1 二进制守卫——壳判定命中：内容**不解码**（解出来是乱码）、**不可保存**（否则回写毁原文件）。
+   *  呈现由 EditorTab 画提示块；本标志 = 「这是二进制」这一事实在插件侧的落点。 */
+  readonly isBinary: boolean;
 
   /** 当前内存中的值 */
   private _value: string;
@@ -35,11 +38,12 @@ export class EditorModel {
   /** 保存成功——EditorTab save → markSaved → fire */
   readonly onDidSave = new MiniEmitter<void>();
 
-  private constructor(filePath: string, content: string, encoding: string) {
+  private constructor(filePath: string, content: string, encoding: string, isBinary = false) {
     this.filePath = filePath;
     this._value = content;
     this._savedValue = content;
     this.encoding = encoding;
+    this.isBinary = isBinary;
     this.language = getLanguageFromPath(filePath);
   }
 
@@ -100,6 +104,16 @@ export class EditorModel {
   static async load(filePath: string): Promise<EditorModel> {
     const normalized = lk.path.normalize(filePath);
     const buffer = await lk.filesystem.readBinaryFile(normalized);
+
+    // T1 二进制守卫——判定归壳（lk.encoding.isBinary 一处真相源）。**特性探测**：旧壳没有这个面
+    // （本插件可跑在未升级的壳上）⇒ 探测不到就退回今日的纯文本路径（乱码照旧，但不是新引入的 bug）。
+    const probe = (lk.encoding as { isBinary?: (b: Uint8Array) => Promise<boolean> } | undefined)?.isBinary;
+    const isBinary = typeof probe === "function" ? await probe.call(lk.encoding, buffer) : false;
+    if (isBinary) {
+      // 二进制不解码（硬解只会得到乱码，还白白跑一遍 detect/decode）；内容留空，由 EditorTab 画提示块
+      return new EditorModel(normalized, "", "utf-8", true);
+    }
+
     const encoding = await lk.encoding.detect(buffer);
     const content = await lk.encoding.decode(buffer, encoding);
     return new EditorModel(normalized, content, encoding);
@@ -107,6 +121,8 @@ export class EditorModel {
 
   /** 保存到磁盘——UTF-8 走文本写入，GBK/UTF-16 走二进制写入保持编码 */
   async save(): Promise<void> {
+    // T1：二进制文件不作为文本回写——内容根本没解码（_value 是空串），写下去就是把原文件抹平
+    if (this.isBinary) throw new Error("binary-file-not-editable");
     if (this.encoding === "utf-8" || this.encoding === "utf8") {
       await lk.filesystem.writeTextFile(this.filePath, this._value);
     } else {
