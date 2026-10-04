@@ -1,22 +1,28 @@
 {
   "version": "1",
-  "updatedAt": "2026-09-30T21:46:10.067Z",
+  "updatedAt": "2026-10-04T15:16:17.719Z",
   "plugins": [
     {
       "id": "editor",
       "name": "编辑器",
-      "version": "1.0.17",
+      "version": "1.0.18",
       "description": "Monaco 代码编辑器——语法高亮、智能提示、Diff 对比",
       "author": {
         "name": "官方"
       },
-      "icon": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.17/resources/icon.svg",
+      "icon": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.18/resources/icon.svg",
       "iconSource": "url",
-      "readmeUrl": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.17/README.md",
-      "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.17/editor.linkdesk-plugin",
-      "size": 8653942,
-      "publishedAt": "2026-09-30T21:46:10.067Z",
+      "readmeUrl": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.18/README.md",
+      "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.18/editor.linkdesk-plugin",
+      "size": 8655317,
+      "publishedAt": "2026-10-04T15:16:17.719Z",
       "versions": [
+        {
+          "version": "1.0.18",
+          "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.18/editor.linkdesk-plugin",
+          "publishedAt": "2026-10-04T15:16:17.719Z",
+          "changelog": "- **配置项行名短名**（配置项短名案）：设置页「编辑器」组 26 条设置此前行名只能裸显英文配置键（`editor.autoSave` 这类），现补声明式短名——如 `autoSave` → 「自动保存」、`fontSize` → 「字号」、`wordWrap` → 「自动换行」、`cursorStyle` → 「光标样式」。中文原文即 i18n key，英文界面走本仓 i18n 译名。\n- **枚举下拉不再裸显英文值**：8 组枚举（`autoSave`／`fontWeight`／`wordWrap`／`lineNumbers`／`renderWhitespace`／`cursorStyle`／`cursorBlinking`／`autoClosingBrackets`）此前无 `enumDescriptions`，下拉直接显 `onFocusChange`、`wordWrapColumn` 这类英文值；现补对象形态显示名（「延迟自动」「按列宽」等）＋英译。`fontWeight` 的 100–900 数值档按原样显示，不另起名。\n- 第三方存量声明不受影响：无短名者照旧回退显配置键。"
+        },
         {
           "version": "1.0.17",
           "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.17/editor.linkdesk-plugin",
@@ -44,8 +50,7 @@
         {
           "version": "1.0.13",
           "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.13/editor.linkdesk-plugin",
-          "publishedAt": "2026-09-19T12:49:02.793Z",
-          "changelog": "- **重打可复现**：@linkdesk/plugin-sdk 0.1.42 起 zip 目录条目时间戳钉死，同一份源码重打逐字节一致。插件内容零变化（仅 plugin.json 版本号随包更新）。"
+          "publishedAt": "2026-09-19T12:49:02.793Z"
         },
         {
           "version": "1.0.12",
