@@ -1,22 +1,28 @@
 {
   "version": "1",
-  "updatedAt": "2026-10-04T15:16:17.719Z",
+  "updatedAt": "2026-10-04T17:56:50.750Z",
   "plugins": [
     {
       "id": "editor",
       "name": "编辑器",
-      "version": "1.0.18",
+      "version": "1.0.19",
       "description": "Monaco 代码编辑器——语法高亮、智能提示、Diff 对比",
       "author": {
         "name": "官方"
       },
-      "icon": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.18/resources/icon.svg",
+      "icon": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.19/resources/icon.svg",
       "iconSource": "url",
-      "readmeUrl": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.18/README.md",
-      "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.18/editor.linkdesk-plugin",
-      "size": 8655317,
-      "publishedAt": "2026-10-04T15:16:17.719Z",
+      "readmeUrl": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.19/README.md",
+      "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.19/editor.linkdesk-plugin",
+      "size": 8656522,
+      "publishedAt": "2026-10-04T17:56:50.750Z",
       "versions": [
+        {
+          "version": "1.0.19",
+          "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.19/editor.linkdesk-plugin",
+          "publishedAt": "2026-10-04T17:56:50.750Z",
+          "changelog": "- **打开非文本文件不再满屏乱码**：用编辑器打开 pdf、图片、压缩包这类文件时，过去会把字节硬按文本解码、标签页里刷出一片乱码；现在这类文件显示一段带文件名的说明，并给出下一步入口（去插件市场找能打开它的插件）。\n- **误存不再毁文件**：这类文件上的保存被停用——此前一次保存就会把原始字节覆写成文本，文件当场损坏。\n- 本轮落的是**呈现能力**——用户可见的变化要等宿主更新（二进制判定能力在宿主侧）。在尚未带该能力的软件上，编辑器自动退回今天的行为（照旧按文本打开），不报错。"
+        },
         {
           "version": "1.0.18",
           "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.18/editor.linkdesk-plugin",
@@ -44,8 +50,7 @@
         {
           "version": "1.0.14",
           "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.14/editor.linkdesk-plugin",
-          "publishedAt": "2026-09-20T00:07:53.716Z",
-          "changelog": "- **删四处死类名引用**（E6#136 普查裁决）：`editor-container`／`editor-empty`／`editor-error`／`editor-loading` 在仓内 CSS 零定义、querySelector 式消费零处——SDK 新腿（0.1.44 自有类名引用悬空判据）指出它们是「挂了名但没有样式」的死引用（分属 `src/index.tsx`、`src/components/EditorTab.tsx`、`src/views/DiffEditor.tsx`）。删掉 className 里的死名，DOM 结构与渲染结果零变化，无功能变化。"
+          "publishedAt": "2026-09-20T00:07:53.716Z"
         },
         {
           "version": "1.0.13",
