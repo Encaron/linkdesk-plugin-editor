@@ -1,22 +1,28 @@
 {
   "version": "1",
-  "updatedAt": "2026-10-05T13:57:04.487Z",
+  "updatedAt": "2026-10-05T19:03:47.665Z",
   "plugins": [
     {
       "id": "editor",
       "name": "编辑器",
-      "version": "1.0.23",
+      "version": "1.0.24",
       "description": "Monaco 代码编辑器——语法高亮、智能提示、Diff 对比",
       "author": {
         "name": "官方"
       },
-      "icon": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.23/resources/icon.svg",
+      "icon": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.24/resources/icon.svg",
       "iconSource": "url",
-      "readmeUrl": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.23/README.md",
-      "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.23/editor.linkdesk-plugin",
-      "size": 8656275,
-      "publishedAt": "2026-10-05T13:57:04.487Z",
+      "readmeUrl": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.24/README.md",
+      "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.24/editor.linkdesk-plugin",
+      "size": 8656479,
+      "publishedAt": "2026-10-05T19:03:47.665Z",
       "versions": [
+        {
+          "version": "1.0.24",
+          "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.24/editor.linkdesk-plugin",
+          "publishedAt": "2026-10-05T19:03:47.665Z",
+          "changelog": "- **二进制文件提示里那句说明，现在跟真的显示出来的按钮对得上了**：以前不论按钮在不在，都写「可右键选择打开方式或在市场搜索阅读器」——而在**没有任何插件认领这类文件**的时候，右键里那一项其实是**隐藏的**，这句话就是假话。现在按两颗按钮**实际的探测结果**选文案：两枚都在 / 只剩「打开方式…」/ 只剩「在市场搜索阅读器」/ 一枚都没有——四种说法各写各的。\n- **同一处还有时序问题**：以前提示是**先照「两枚按钮都在」说一句**，探测回来后按钮可能消失、话却已经说出去了。现在**等两个探测都落定**再弹这一句，不会再出现「提示里写了、界面上却没有」。\n- 内部：文案选键抽成纯函数（`binaryNoticeToastKey`）＋单测钉住四种组合（并逐句断言这四句话里**不出现「右键」**）；本插件字典新增四条整句译名。"
+        },
         {
           "version": "1.0.23",
           "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.23/editor.linkdesk-plugin",
@@ -44,8 +50,7 @@
         {
           "version": "1.0.19",
           "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.19/editor.linkdesk-plugin",
-          "publishedAt": "2026-10-04T17:56:50.750Z",
-          "changelog": "- **打开非文本文件不再满屏乱码**：用编辑器打开 pdf、图片、压缩包这类文件时，过去会把字节硬按文本解码、标签页里刷出一片乱码；现在这类文件显示一段带文件名的说明，并给出下一步入口（去插件市场找能打开它的插件）。\n- **误存不再毁文件**：这类文件上的保存被停用——此前一次保存就会把原始字节覆写成文本，文件当场损坏。\n- 本轮落的是**呈现能力**——用户可见的变化要等宿主更新（二进制判定能力在宿主侧）。在尚未带该能力的软件上，编辑器自动退回今天的行为（照旧按文本打开），不报错。"
+          "publishedAt": "2026-10-04T17:56:50.750Z"
         },
         {
           "version": "1.0.18",
