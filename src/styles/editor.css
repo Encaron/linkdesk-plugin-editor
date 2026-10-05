@@ -104,27 +104,5 @@
   margin-top: 4px;
 }
 
-.editor-binary-notice-btn {
-  padding: 3px 12px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--bg-card);
-  color: var(--text-primary);
-  font-size: var(--font-size-2xs);
-  cursor: pointer;
-}
-
-.editor-binary-notice-btn:hover {
-  border-color: var(--accent);
-}
-
-.editor-binary-notice-btn.primary {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--text-on-accent);
-}
-
-.editor-binary-notice-btn.primary:hover {
-  background: var(--accent-hover);
-  border-color: var(--accent-hover);
-}
+/* 两钮的样式**归壳**：住共享 `@linkdesk/ui` 的 `Button`（`.ldk-button`）——⛔ 这里不再有私有按钮类
+   （C1.6：编辑器不许自带一套按钮；私有 `.editor-binary-notice-btn*` 已于 1.0.23 删除） */
