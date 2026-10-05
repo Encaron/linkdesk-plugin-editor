@@ -9,11 +9,15 @@
  *   - 「打开方式…」——宿主命令 `SHELL_COMMANDS.openWith`（SDK 子路径 `@linkdesk/plugin-sdk/shell-commands`）不在册 ⇒ 隐藏。
  *     旧写法（本纠正案已废止）是拿一个 `OPEN_WITH_WIRED` **硬编码开关**顶替探测——那是把
  *     「宿主有没有实现」写死在插件里，必然过期；现在探测的是**命令注册面**这个事实。
+ * ③ **toast 文案跟着钮走**（2026-10-06 改）：老文案恒说「可右键选择打开方式」，而右键里那一项
+ *   对没人认领的扩展名是隐藏的 ⇒ 假话。现在文案由 `binaryNoticeToastKey(canOpenWith, canSearchMarket)`
+ *   选键（⛔ 不拼句），**只描述真的渲染出来的钮**，且等两个探面都落定才发（否则会按缺省态说错话）。
  */
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@linkdesk/ui";
 import { SHELL_COMMANDS, openWith } from "@linkdesk/plugin-sdk/shell-commands";
+import { binaryNoticeToastKey } from "./binaryNoticeToast";
 
 const lk = () => window.linkdesk;
 
@@ -31,6 +35,9 @@ export default function BinaryNotice({ filePath }: { filePath: string }) {
   const { t } = useTranslation();
   const [canSearchMarket, setCanSearchMarket] = useState(false);
   const [canOpenWith, setCanOpenWith] = useState(false);
+  // 两个探面**各自落定**的旗子——toast 等它们都落定才发（见下）
+  const [marketProbed, setMarketProbed] = useState(false);
+  const [hostProbed, setHostProbed] = useState(false);
 
   const fileName = useMemo(() => filePath.split(/[\\/]/).pop() || filePath, [filePath]);
 
@@ -42,6 +49,7 @@ export default function BinaryNotice({ filePath }: { filePath: string }) {
         const list = await lk().pluginManager?.list?.();
         if (!cancelled) setCanSearchMarket(!!list?.some((p) => p.pluginId === MARKETPLACE_PLUGIN_ID));
       } catch { /* 探测失败 = 面不在 */ }
+      if (!cancelled) setMarketProbed(true);
     })();
     return () => { cancelled = true; };
   }, []);
@@ -54,17 +62,23 @@ export default function BinaryNotice({ filePath }: { filePath: string }) {
         const list = await lk().commands?.getCommands?.();
         if (!cancelled) setCanOpenWith(!!list?.some((c) => c?.id === SHELL_COMMANDS.openWith));
       } catch { /* 探测失败 = 面不在 */ }
+      if (!cancelled) setHostProbed(true);
     })();
     return () => { cancelled = true; };
   }, []);
 
-  // 右下角 toast——本块随标签挂载一次，故每次打开只弹一次
+  // 右下角 toast——本块随标签挂载一次，故每次打开只弹一次。
+  // 🔴 文案由**探面结果**选键（⛔ 不承诺右键菜单：那一项的条件编辑器看不见），且等两个探面都落定
+  //   才发（按缺省态抢发会把「有钮」说成「没钮」，或反之）；`firedRef` 保证只发一次。
+  const firedRef = React.useRef(false);
   useEffect(() => {
+    if (!marketProbed || !hostProbed || firedRef.current) return;
+    firedRef.current = true;
     lk().notifications?.show?.(
-      t("「{{name}}」无法作为文本显示 —— 可右键选择打开方式或在市场搜索阅读器", { name: fileName }),
+      t(binaryNoticeToastKey(canOpenWith, canSearchMarket), { name: fileName }),
       { type: "warning", source: "editor" },
     );
-  }, [t, fileName]);
+  }, [marketProbed, hostProbed, canOpenWith, canSearchMarket, t, fileName]);
 
   const handleOpenWith = useCallback(() => {
     // 编辑器手上就是一个真实文件 ⇒ 给 `uri`（面板居中升起，无 anchor）
