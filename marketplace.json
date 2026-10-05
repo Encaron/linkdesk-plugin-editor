@@ -1,22 +1,28 @@
 {
   "version": "1",
-  "updatedAt": "2026-10-04T19:50:30.755Z",
+  "updatedAt": "2026-10-05T02:03:19.601Z",
   "plugins": [
     {
       "id": "editor",
       "name": "编辑器",
-      "version": "1.0.21",
+      "version": "1.0.22",
       "description": "Monaco 代码编辑器——语法高亮、智能提示、Diff 对比",
       "author": {
         "name": "官方"
       },
-      "icon": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.21/resources/icon.svg",
+      "icon": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.22/resources/icon.svg",
       "iconSource": "url",
-      "readmeUrl": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.21/README.md",
-      "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.21/editor.linkdesk-plugin",
-      "size": 8655649,
-      "publishedAt": "2026-10-04T19:50:30.755Z",
+      "readmeUrl": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.22/README.md",
+      "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.22/editor.linkdesk-plugin",
+      "size": 8655960,
+      "publishedAt": "2026-10-05T02:03:19.601Z",
       "versions": [
+        {
+          "version": "1.0.22",
+          "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.22/editor.linkdesk-plugin",
+          "publishedAt": "2026-10-05T02:03:19.601Z",
+          "changelog": "- **「打开方式…」钮上屏（T1 特性开关合龙）**：1.0.20 起二进制提示块里的「打开方式…」钮被 `OPEN_WITH_WIRED=false` 钉着不显示——当时 file-tree 的同名命令还是占位（真机撞出死钮的第 1 波教训）。现在 file-tree 1.0.27 已真接选择器（列全部 handler＋仅此一次/设为默认/恢复自动），本版把开关翻 true，二进制文件标签内的「打开方式…」从此可用。命令以裸 filePath 字符串首参调用，无文件/旧宿主时命令自身 no-op，不留死响应。\n- **读数**：`npm run verify` 九段全绿 · `npm test` 78 例全绿。"
+        },
         {
           "version": "1.0.21",
           "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.21/editor.linkdesk-plugin",
@@ -44,8 +50,7 @@
         {
           "version": "1.0.17",
           "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.17/editor.linkdesk-plugin",
-          "publishedAt": "2026-09-30T21:46:10.067Z",
-          "changelog": "- **安装包瘦身**：包内更新日志只带最近 5 版（更早的更新记录仍在本插件仓库里）——由 SDK 自动施加，用户无需任何操作。"
+          "publishedAt": "2026-09-30T21:46:10.067Z"
         },
         {
           "version": "1.0.16",
