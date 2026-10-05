@@ -23,12 +23,14 @@ const OPEN_WITH_COMMAND = "file-tree.openWith";
  *   `commands.getCommands()` 里**每一条插件声明的命令**都带 `placeholder: true`——那是
  *   「元数据由 loader 注册、执行转发给池」的**路由标记**，不是「有没有实现」的判据
  *   （`file-tree.openFile` / `file-tree.revealInOS` 这些**真能跑**的命令同样是 true）。
- *   而 `file-tree.openWith` 今天在 file-tree 的 manifest 里挂着、实现未接（描述自陈
+ *   第 1 波时 `file-tree.openWith` 在 file-tree 的 manifest 里挂着、实现未接（描述自陈
  *   「占位命令——未接实现，调用无效果」）⇒ 探测只会得到一个**点了没反应的空钮**。
  *   ⇒ 宿主未实现前，唯一诚实的表达就是不显示它。
- * 🔁 宿主侧实现落地（file-tree 真接上 `file-tree.openWith`）后：把这行翻成 true 并发一版本插件。
+ * ✅ 2026-10-05 第 3 波（AI-3）：file-tree 1.0.27 已真接 `file-tree.openWith`（打开方式选择器，
+ *   命令收 filePath 字符串或 { uri, anchor } 上下文，旧宿主/无面时命令自身 no-op）⇒ 本旗翻 true，
+ *   钮上屏（T1 交付判据③的「特性开关式接线」在此合龙）。
  */
-const OPEN_WITH_WIRED = false;
+const OPEN_WITH_WIRED = true;
 /** 市场插件 id——揭示其侧栏容器（与点图标栏同一路径） */
 const MARKETPLACE_PLUGIN_ID = "marketplace";
 
