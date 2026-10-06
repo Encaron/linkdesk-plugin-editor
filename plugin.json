@@ -3,6 +3,7 @@
   "pluginId": "editor",
   "name": "编辑器",
   "version": "1.0.24",
+  "minAppVersion": "0.2.13",
   "icon": "resources/icon.svg",
   "description": "Monaco 代码编辑器——语法高亮、智能提示、Diff 对比",
   "author": "官方",
