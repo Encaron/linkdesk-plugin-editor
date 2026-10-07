@@ -1,22 +1,29 @@
 {
   "version": "1",
-  "updatedAt": "2026-10-05T19:03:47.665Z",
+  "updatedAt": "2026-10-07T07:17:02.196Z",
   "plugins": [
     {
       "id": "editor",
       "name": "编辑器",
-      "version": "1.0.24",
+      "version": "1.0.25",
       "description": "Monaco 代码编辑器——语法高亮、智能提示、Diff 对比",
       "author": {
         "name": "官方"
       },
-      "icon": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.24/resources/icon.svg",
+      "icon": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.25/resources/icon.svg",
       "iconSource": "url",
-      "readmeUrl": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.24/README.md",
-      "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.24/editor.linkdesk-plugin",
-      "size": 8656479,
-      "publishedAt": "2026-10-05T19:03:47.665Z",
+      "minAppVersion": "0.2.13",
+      "readmeUrl": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.25/README.md",
+      "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.25/editor.linkdesk-plugin",
+      "size": 8658551,
+      "publishedAt": "2026-10-07T07:17:02.196Z",
       "versions": [
+        {
+          "version": "1.0.25",
+          "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.25/editor.linkdesk-plugin",
+          "publishedAt": "2026-10-07T07:17:02.196Z",
+          "changelog": "- **二进制提示页新增第三颗按钮「仍旧以该编辑器插件打开」**：以前提示页只有「打开方式…」「在市场搜索阅读器」两条路，没有一条是「我就要按文本看」。新按钮把文件**按文本强制打开**——乱码照实显示，照常编辑；**保存前会确认一次**（写回会用文本内容覆盖原二进制文件，本标签页只问这一遍）。\n- 强制打开后顶部有一条**细警示条**说明当前状态，右侧「退回提示页」随时回到原提示页；再点第三颗按钮直接回来，不重新读盘。\n- 这颗按钮同时有**命令面板路径**：`editor.forceOpenAsText`（不用鼠标也能走到）。\n- 右下角提示语同步修正：四种组合都会提到「或仍以文本方式打开」这条**永远在**的出路（以前两颗按钮都不在时，提示里一条出路都不提）。\n- 内部：`EditorModel.load` 新增 `forceText` 选项——「是二进制」（壳判定的事实）与「用户选择按文本打开」（用户的选择）分成两个标记记；外部文件变更重载保持强制态、不再退回提示页模型。\n\n# 更新日志"
+        },
         {
           "version": "1.0.24",
           "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.24/editor.linkdesk-plugin",
@@ -44,8 +51,7 @@
         {
           "version": "1.0.20",
           "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.20/editor.linkdesk-plugin",
-          "publishedAt": "2026-10-04T18:23:20.792Z",
-          "changelog": "- **不显示点了没反应的入口**：上一版给二进制文件配了「打开方式…」入口，但宿主侧那个动作还没做出来——按钮点了什么也不会发生。这一版先把它收起来（接线留着，动作到位就放出来）。\n- 二进制文件的说明文字与「在市场搜索阅读器」入口不受影响；文本文件照旧。"
+          "publishedAt": "2026-10-04T18:23:20.792Z"
         },
         {
           "version": "1.0.19",
