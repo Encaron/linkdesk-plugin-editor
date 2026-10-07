@@ -3,15 +3,19 @@
  *
  * 判定归壳（`lk.encoding.isBinary`，一处真相源），**呈现归被兜底的插件**。
  *
- * 两颗钮：① 视觉一律用共享 `Button`（壳按钮同一套主题/字号/hover——⛔ 不再手搓 `<button>`）；
+ * 三颗钮：① 视觉一律用共享 `Button`（壳按钮同一套主题/字号/hover——⛔ 不再手搓 `<button>`）；
  * ② 动作**探测接线**：面/命令不在就隐藏（⛔ 不留死钮，与 E17/E39 同律）。
  *   - 「在市场搜索阅读器」——市场插件被卸载/禁用 ⇒ 隐藏。
  *   - 「打开方式…」——宿主命令 `SHELL_COMMANDS.openWith`（SDK 子路径 `@linkdesk/plugin-sdk/shell-commands`）不在册 ⇒ 隐藏。
  *     旧写法（本纠正案已废止）是拿一个 `OPEN_WITH_WIRED` **硬编码开关**顶替探测——那是把
  *     「宿主有没有实现」写死在插件里，必然过期；现在探测的是**命令注册面**这个事实。
+ *   - 「仍旧以该编辑器插件打开」（兜底链修复 2026-10-07）——**本插件自有动作，恒在**，无需探面：
+ *     把二进制按文本强制打开（D1=乙：可编辑可保存，写前确认在保存管线）；非鼠标路径 =
+ *     命令 `editor.forceOpenAsText`（动作经 forceTextActions 登记表接到标签）。
  * ③ **toast 文案跟着钮走**（2026-10-06 改）：老文案恒说「可右键选择打开方式」，而右键里那一项
  *   对没人认领的扩展名是隐藏的 ⇒ 假话。现在文案由 `binaryNoticeToastKey(canOpenWith, canSearchMarket)`
- *   选键（⛔ 不拼句），**只描述真的渲染出来的钮**，且等两个探面都落定才发（否则会按缺省态说错话）。
+ *   选键（⛔ 不拼句），**只描述真的渲染出来的钮**（第三颗钮恒在 ⇒ 四种组合都提「文本方式」），
+ *   且等两个探面都落定才发（否则会按缺省态说错话）。
  */
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -31,7 +35,14 @@ function extOf(filePath: string): string | undefined {
   return i > 0 && i < name.length - 1 ? name.slice(i + 1).toLowerCase() : undefined;
 }
 
-export default function BinaryNotice({ filePath }: { filePath: string }) {
+export default function BinaryNotice({
+  filePath,
+  onForceText,
+}: {
+  filePath: string;
+  /** 「仍旧以该编辑器插件打开」——EditorTab 传入（强制加载）；命令面走 forceTextActions 登记表 */
+  onForceText?: () => Promise<void> | void;
+}) {
   const { t } = useTranslation();
   const [canSearchMarket, setCanSearchMarket] = useState(false);
   const [canOpenWith, setCanOpenWith] = useState(false);
@@ -111,6 +122,11 @@ export default function BinaryNotice({ filePath }: { filePath: string }) {
         {canSearchMarket && (
           <Button variant="ghost" onClick={handleSearchMarket}>
             {t("在市场搜索阅读器")}
+          </Button>
+        )}
+        {onForceText && (
+          <Button variant="primary" onClick={onForceText}>
+            {t("仍旧以该编辑器插件打开")}
           </Button>
         )}
       </div>

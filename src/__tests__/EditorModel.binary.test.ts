@@ -56,4 +56,39 @@ describe("EditorModel.load —— T1 二进制守卫", () => {
     expect(lk.filesystem.writeTextFile).not.toHaveBeenCalled();
     expect(lk.filesystem.writeBinaryFile).not.toHaveBeenCalled();
   });
+
+  // ── 兜底链修复（2026-10-07，D1=乙）：forceText 强制文本路径 ──
+
+  it("🔴 forceText ⇒ 二进制也解码出内容（乱码照实显示），isBinary 与 forcedText 同真", async () => {
+    lk.encoding.isBinary = vi.fn(async () => true);
+    const m = await EditorModel.load("/a/paper.pdf", { forceText: true });
+    expect(m.isBinary).toBe(true);
+    expect(m.forcedText).toBe(true);
+    expect(m.getValue()).toBe("PLAIN TEXT");
+    expect(lk.encoding.decode).toHaveBeenCalled();
+  });
+
+  it("🔴 文本文件带 forceText ⇒ 零回归（isBinary/forcedText 均为 false）", async () => {
+    lk.encoding.isBinary = vi.fn(async () => false);
+    const m = await EditorModel.load("/a/b.ts", { forceText: true });
+    expect(m.isBinary).toBe(false);
+    expect(m.forcedText).toBe(false);
+    expect(m.getValue()).toBe("PLAIN TEXT");
+  });
+
+  it("🔴 forcedText 模型可保存（D1=乙：写前确认在保存管线，模型层不拦）", async () => {
+    lk.encoding.isBinary = vi.fn(async () => true);
+    const m = await EditorModel.load("/a/paper.pdf", { forceText: true });
+    await expect(m.save()).resolves.toBeUndefined();
+    expect(lk.filesystem.writeTextFile).toHaveBeenCalledWith("/a/paper.pdf", "PLAIN TEXT");
+  });
+
+  it("🔴 reloadFromDisk 保持强制态——重载不退回提示页模型（否则外部变更会被误比成空串）", async () => {
+    lk.encoding.isBinary = vi.fn(async () => true);
+    (lk.encoding.decode as ReturnType<typeof vi.fn>)
+      .mockResolvedValueOnce("PLAIN TEXT")
+      .mockResolvedValueOnce("FRESH TEXT");
+    const m = await EditorModel.load("/a/paper.pdf", { forceText: true });
+    await expect(m.reloadFromDisk()).resolves.toBe("FRESH TEXT");
+  });
 });

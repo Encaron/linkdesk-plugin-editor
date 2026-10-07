@@ -3,7 +3,21 @@ import { useTranslation } from "react-i18next";
 import EditorTab from "./components/EditorTab";
 import DiffEditor from "./views/DiffEditor";
 import { initHotExit } from "./services/hot-exit";
+import { getForceTextAction } from "./services/forceTextActions";
 import "./styles/editor.css"; initHotExit();
+
+// 兜底链修复（2026-10-07，硬约束 26）——提示页第三颗钮的非鼠标路径：命令面板直达。
+// 动作本体在 EditorTab 的 React state 里 ⇒ 命令面经 forceTextActions 登记表按 filePath 取用；
+// 没有处于提示页的标签时静默 no-op（命令对「不适用」场景不报错，与探面隐藏同律）。
+const cmds = window.linkdesk?.commands as unknown as {
+  registerCommand?: (id: string, handler: (params?: { filePath?: string }) => Promise<void>) => void;
+} | undefined;
+if (cmds?.registerCommand) {
+  cmds.registerCommand("editor.forceOpenAsText", async (params) => {
+    const run = getForceTextAction(params?.filePath);
+    if (run) await run();
+  });
+}
 
 const EditorPlugin: React.FC<{ isActive?: boolean; tabId?: string; sourceId?: string }> = ({ sourceId: propId, isActive, tabId }) => {
   // E5#84 → E5.7#98：filePath 单通道——pool 经 props 传入（PluginComponent sourceId）。

@@ -106,3 +106,17 @@
 
 /* 两钮的样式**归壳**：住共享 `@linkdesk/ui` 的 `Button`（`.ldk-button`）——⛔ 这里不再有私有按钮类
    （C1.6：编辑器不许自带一套按钮；私有 `.editor-binary-notice-btn*` 已于 1.0.23 删除） */
+
+/* 兜底链修复（2026-10-07）——强制文本态的细警示条（D1=乙：可编辑可保存，写前确认）。
+   「退回提示页」那颗钮仍归共享 Button（C1.6 同律）；本条只管条的形态：细条 + 警示色文字，色全走 token。 */
+.editor-forced-text-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 24px;
+  padding: 2px 10px;
+  font-size: var(--font-size-2xs);
+  color: var(--warning-text);
+  background: var(--hover-overlay);
+  border-bottom: 1px solid var(--separator);
+}

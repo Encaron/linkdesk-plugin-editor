@@ -31,11 +31,25 @@ export function useEditorSave(state: EditorTabState, t: TFunction, isActive: boo
     tabs?.updateLabelBySourceId?.(currentPath, baseLabelRef.current);
   }, [currentPath, tabs, dirtyRef, baseLabelRef]);
 
+  // 兜底链修复（2026-10-07，D1=乙）——强制文本模型允许保存，写前**每标签会话确认一次**
+  //（写回会用文本内容覆盖原二进制文件）。按次询问会把 Ctrl+S / 自动保存变成折磨；
+  // 想反悔就「退回提示页」再离开。提示页模型（内容没解码）照旧挡死（EditorModel.save 同闸）。
+  const forcedSaveConfirmedRef = useRef(false);
+
   const handleSave = useCallback(async () => {
     if (!model) return;
     // T1 二进制守卫：内容没解码（_value 是空串），回写等于把原文件抹平——直接不保存。
     // 提示块已顶上解释；此处是最后一道闸（防将来别处又给二进制 model 接上保存入口）。
-    if (model.isBinary) return;
+    if (model.isBinary && !model.forcedText) return;
+    if (model.isBinary && model.forcedText && !forcedSaveConfirmedRef.current) {
+      const ok = await lk.dialog.confirm(
+        t("「{{name}}」是二进制文件，以文本方式保存会用文本内容覆盖原文件。仍要保存？", {
+          name: baseLabelRef.current,
+        }),
+      );
+      if (!ok) return;
+      forcedSaveConfirmedRef.current = true;
+    }
     try {
       await model.save();
       model.markSaved();

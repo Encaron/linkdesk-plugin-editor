@@ -109,8 +109,13 @@
   "打开方式…": "Open with…",
   "在市场搜索阅读器": "Find a viewer in the marketplace",
   "「{{name}}」无法作为文本显示": "“{{name}}” can't be shown as text",
-  "「{{name}}」无法作为文本显示 —— 可用「打开方式」换一种打开，或在市场搜索阅读器": "“{{name}}” can't be shown as text — use “Open with” to pick another way, or find a viewer in the marketplace",
-  "「{{name}}」无法作为文本显示 —— 可用「打开方式」换一种打开": "“{{name}}” can't be shown as text — use “Open with” to pick another way",
-  "「{{name}}」无法作为文本显示 —— 可在市场搜索阅读器": "“{{name}}” can't be shown as text — find a viewer in the marketplace",
+  "「{{name}}」无法作为文本显示 —— 可用「打开方式」换一种打开，或在市场搜索阅读器，或仍以文本方式打开": "“{{name}}” can't be shown as text — use “Open with” to pick another way, find a viewer in the marketplace, or open it as text anyway",
+  "「{{name}}」无法作为文本显示 —— 可用「打开方式」换一种打开，或仍以文本方式打开": "“{{name}}” can't be shown as text — use “Open with” to pick another way, or open it as text anyway",
+  "「{{name}}」无法作为文本显示 —— 可在市场搜索阅读器，或仍以文本方式打开": "“{{name}}” can't be shown as text — find a viewer in the marketplace, or open it as text anyway",
+  "「{{name}}」无法作为文本显示 —— 或仍以文本方式打开": "“{{name}}” can't be shown as text — or open it as text anyway",
+  "仍旧以该编辑器插件打开": "Open with this editor anyway",
+  "已按文本强制打开 · 可编辑（保存前会确认：写回会覆盖原二进制内容）": "Opened as text by force · editable (saving asks first — writing back overwrites the original binary content)",
+  "退回提示页": "Back to the notice",
+  "「{{name}}」是二进制文件，以文本方式保存会用文本内容覆盖原文件。仍要保存？": "“{{name}}” is a binary file — saving as text will overwrite it with text content. Save anyway?",
   "加载中…": "Loading..."
 }
