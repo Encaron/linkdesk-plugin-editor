@@ -58,7 +58,7 @@ export function useEditorSave(state: EditorTabState, t: TFunction, isActive: boo
       console.error(`[EditorTab] 保存失败: ${currentPath}`, err);
       setError(`${t("保存失败：")} ${(err as Error).message}`);
     }
-  }, [model, currentPath, t, markClean, setError]);
+  }, [model, currentPath, baseLabelRef, t, markClean, setError]);
 
   // E4V#40o——onFocusChange 自动保存：切走标签页时自动保存
   useEffect(() => {
