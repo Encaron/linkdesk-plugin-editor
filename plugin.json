@@ -2,7 +2,7 @@
   "$schema": "./node_modules/@linkdesk/plugin-sdk/schemas/plugin.schema.json",
   "pluginId": "editor",
   "name": "编辑器",
-  "version": "1.0.27",
+  "version": "1.0.28",
   "category": "development",
   "categories": ["code-editing"],
   "minAppVersion": "0.2.13",
@@ -557,5 +557,12 @@
         "role": "text-fallback"
       }
     ]
+  },
+  "readme": {
+    "default": "README.md",
+    "locales": {
+      "zh": "README.md",
+      "en": "docs/readme/en.md"
+    }
   }
 }
