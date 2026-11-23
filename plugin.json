@@ -2,9 +2,11 @@
   "$schema": "./node_modules/@linkdesk/plugin-sdk/schemas/plugin.schema.json",
   "pluginId": "editor",
   "name": "编辑器",
-  "version": "1.0.28",
+  "version": "1.0.29",
   "category": "development",
-  "categories": ["code-editing"],
+  "categories": [
+    "code-editing"
+  ],
   "minAppVersion": "0.2.13",
   "icon": "resources/icon.svg",
   "description": "Monaco 代码编辑器——语法高亮、智能提示、Diff 对比",

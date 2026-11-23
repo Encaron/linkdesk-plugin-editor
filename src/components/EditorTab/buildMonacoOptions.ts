@@ -3,6 +3,8 @@
  * 配置键（editor.fontSize 等）→ Monaco 选项（fontSize 等）。
  * 嵌套键（editor.minimap.enabled）→ 嵌套对象（minimap: { enabled }）。
  */
+import { getMonacoThemeName } from "../../services/theme-sync";
+
 const lk = window.linkdesk;
 
 export async function buildMonacoOptions(): Promise<Record<string, unknown>> {
@@ -40,7 +42,7 @@ export async function buildMonacoOptions(): Promise<Record<string, unknown>> {
     lk.configuration.get("editor.suggest.showSnippets"),
   ]);
   return {
-    theme: document.documentElement.getAttribute("data-theme") === "dark" ? "vs-dark" : "vs",
+    theme: getMonacoThemeName(),
     fontSize, fontFamily, fontWeight, lineHeight, tabSize, insertSpaces, detectIndentation,
     wordWrap, lineNumbers, minimap: { enabled: minimapEnabled }, renderWhitespace, cursorStyle, cursorBlinking,
     mouseWheelZoom, smoothScrolling, autoClosingBrackets, bracketPairColorization,
