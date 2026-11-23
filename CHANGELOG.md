@@ -18,6 +18,13 @@
 
 # 更新日志
 
+## v1.0.29（2026-11-24）
+
+- **Monaco 主题 token 化（极性归一化 Phase 5）**：编辑器不再只有 vs/vs-dark 两套固定色——从池文档的生效 CSS 变量生成 Monaco 主题（背景/前景/行号/光标/选区/行高亮/悬浮件/缩进线），玻璃与整窗主题的编辑器终于跟外壳同一色系；token 语法色仍保留 VS Code 可读规则。
+- **旧 bug 防线原样保留**：`loadThemes:true`、`defineTheme` 先于 `setTheme`、`setTheme` + 每个 editor `updateOptions` 双路径；DiffEditor 两个 editor 单独登记、主题切换同批更新；`var()`/`color-mix()` 先解析成 hex，解析失败回落 `vs/vs-dark`；字体大小/族仍走 `editor.*`，不进主题。
+- 初始 `editor.create()` 的主题名改由 `getMonacoThemeName()` 给出（当前主题已 define），避免「创建时用了未注册主题名 → 黑字/回落」。
+
+
 ## v1.0.26（2026-11-20）
 
 - **分类声明（R4-2.8/2.9）**：`plugin.json` 顶层补 `category: "development"` ＋ `categories: ["code-editing"]`——商店分类抽屉归位，随本次发版进入官方目录条目。

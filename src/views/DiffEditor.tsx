@@ -7,7 +7,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { EditorModel } from "../services/EditorModel";
-import { syncMonacoTheme, subscribeThemeSync } from "../services/theme-sync";
+import { getMonacoThemeName, registerDiffEditor, syncMonacoTheme, subscribeThemeSync } from "../services/theme-sync";
 // E5.8#24.8：护栏统一——DiffEditor 先前直接 import("monaco-editor") 绕过补丁：
 // 若先于任何编辑器标签 mount → @codingame 补丁前加载 → E5.6#2 暗色字体黑竞态复现。
 import { bootstrapMonaco, getMonaco } from "../services/monaco-bootstrap";
@@ -66,12 +66,18 @@ const DiffEditor: React.FC<DiffEditorProps> = ({ originalPath, modifiedPath, isA
         const modM = monaco.editor.createModel(modModel.getValue(), undefined, modUri);
 
         const diffEditor = monaco.editor.createDiffEditor(container, {
-          theme: document.documentElement.getAttribute("data-theme") === "dark" ? "vs-dark" : "vs",
+          theme: getMonacoThemeName(),
           originalEditable: false,
           readOnly: true,
         });
         diffEditor.setModel({ original: origM, modified: modM });
         diffEditorRef.current = diffEditor;
+        // 2026-11-24：DiffEditor 不在 getEditors()——登记，主题切换时同批 updateOptions（旧 latent bug 防线）
+        {
+          const offDiff = registerDiffEditor(diffEditor);
+          const offSync = themeSyncUnsubRef.current;
+          themeSyncUnsubRef.current = () => { offDiff(); offSync?.(); };
+        }
         setLoading(false);
       } catch (err) {
         if (disposed) return;

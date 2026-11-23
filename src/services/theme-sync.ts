@@ -1,25 +1,21 @@
 /**
- * E4V#40e 主题同步——LinkDesk 暗/亮 → Monaco vs-dark / vs。
+ * E4V#40e 主题同步——LinkDesk 主题 tokens → Monaco 主题（2026-11-24 token 化）。
  *
- * 🔴 双路径机制（E5#107 + adj）：
- *   路径 1：monaco.editor.setTheme() — 被 @codingame/monaco-vscode-api 拦截，
- *          走 StandaloneWorkbenchThemeService 异步管道。loadThemes:false 时可能找不到主题。
- *   路径 2：editor.updateOptions({theme}) — Monaco 实例级 API，绕过 VS Code service override，
- *          直接设编辑器主题。即使路径 1 竞态失败，路径 2 永远有效。
+ * 🔴 旧 bug 防线（一条都不能拆；出处 `bug-atlas §B4` / E5.8#24.8 / E5#114d）：
+ *   1) `monacoBootstrap` 保持 `loadThemes:true`（vs/vs-dark 必须已注册）。
+ *   2) 双路径：`defineTheme` → `setTheme` → **每个 editor `updateOptions({theme})`**（含 DiffEditor 的两个 editor）。
+ *   3) 自定义主题名必须**先 define 再 set**；`defineTheme` 幂等/失败回落 `vs`/`vs-dark`。
+ *   4) 初始创建的主题名由本模块给出（`getMonacoThemeName()`），不读裸 `data-theme` 猜。
+ *   5) 事件只走 `window.linkdesk.events`（多 WebView：不要用 CoreEvents）。
+ *   6) 字体不塞进主题：fontSize/fontFamily 仍走 `editor.*` 配置（E5.8#179 双轴正交）。
  *
- * 🔥 E5#114d 生产修复：defineTheme 安全网——
- *   生产环境 @codingame 主题扩展 file:// URL 可能解析失败，CSS 规则不生成，
- *   导致主编辑器 token 颜色错误（缩略图 Canvas 渲染不受影响）。
- *   defineTheme 用 Monaco 原生 API 注册 vs-dark/vs，零外部依赖，
- *   在 setTheme 之前调用——只要定义过，后续 setTheme 就能找到主题。
- *
- * 🔥 E5.5#7 Bug B fix：主题变更事件改用 window.linkdesk.events。
- *   多 WebView 下 CoreEvents.onDidChangeTheme 是隔离实例——壳侧主题变更不会触发编辑器。
- *   IpcBridge.broadcast("theme:changed") → plugin:push → events.on("theme:changed") 是正确路径。
+ * 主题颜色取自池文档上的生效 CSS 变量（含玻璃/整窗合成后的 solid 值）；`var()`/`color-mix()` 经
+ * 探针元素解析成 rgb 再转 hex。解析不出的键跳过；整组不成立 → 回落内置 vs/vs-dark。
  */
 // E5.7#98：Monaco 具体类型——替代 any（monaco: any / rules: any[] / { current: any }）
 import type { editor as MonacoEditorApi } from "monaco-editor";
 type MonacoNs = typeof import("monaco-editor");
+type Base = "vs" | "vs-dark";
 
 /** Monaco 暗色 token 颜色——对标 VS Code Dark+ */
 const DARK_TOKEN_RULES: MonacoEditorApi.ITokenThemeRule[] = [
@@ -51,48 +47,169 @@ const LIGHT_TOKEN_RULES: MonacoEditorApi.ITokenThemeRule[] = [
   { token: "predefined", foreground: "AF00DB" }, // C 预处理器
 ];
 
-/** E5#114d：注册 Monaco 原生主题——纯兜底，不依赖 VS Code 主题扩展文件加载 */
-function defineThemeSafe(monaco: MonacoNs, themeName: "vs-dark" | "vs", rules: MonacoEditorApi.ITokenThemeRule[]): void {
-  try {
-    // 只定义一次——重复定义抛异常
-    monaco.editor.defineTheme(themeName, {
-      base: themeName === "vs-dark" ? "vs-dark" : "vs",
-      inherit: true,
-      rules,
-      colors: {},
-    });
-  } catch {
-    // 已定义过——忽略
-  }
-}
+const defined = new Set<string>();
+let currentThemeName: string | null = null;
+/** DiffEditor 不在 `getEditors()` 里——单独登记，主题切换时同批 updateOptions（旧 latent bug 防线） */
+const diffEditors = new Set<{ updateOptions(options: Record<string, unknown>): void }>();
 
-function getTheme(): string {
+function baseTheme(): Base {
   return document.documentElement.getAttribute("data-theme") === "dark" ? "vs-dark" : "vs";
 }
 
-export function syncMonacoTheme(monaco: MonacoNs): void {
-  const theme = getTheme();
-  // E5#114d：setTheme 之前确保主题已定义——生产环境兜底
-  defineThemeSafe(monaco, "vs-dark", DARK_TOKEN_RULES);
-  defineThemeSafe(monaco, "vs", LIGHT_TOKEN_RULES);
-  // 路径 1：全局 setTheme（通知 VS Code service 层）
-  monaco.editor.setTheme(theme);
-  // 路径 2：实例级 updateOptions——绕过 StandaloneWorkbenchThemeService 异步管道
-  const editors = monaco.editor.getEditors?.() ?? [];
-  for (const ed of editors) {
-    // theme 在 IGlobalEditorOptions 不在 IEditorOptions——getEditors 只返回 ICodeEditor——窄接口 cast（E5.7#98）
-    try { (ed as MonacoEditorApi.IStandaloneCodeEditor).updateOptions({ theme }); } catch { /* 编辑器已销毁 */ }
+function readVar(name: string): string {
+  return getComputedStyle(document.documentElement).getPropertyValue(`--${name}`).trim();
+}
+
+/** 把 CSS 颜色（含 var()/color-mix()）解析成 rgb()/rgba()；失败 → null */
+function resolveCssColor(name: string): string | null {
+  const raw = readVar(name);
+  if (!raw) return null;
+  if (/^#[0-9a-f]{3,8}$/i.test(raw)) return raw;
+  if (/^rgba?\(/i.test(raw)) return raw;
+  // var()/color-mix()/命名色——交给浏览器求值：探针元素的 computed color 必为 rgb/rgba
+  const probe = document.createElement("span");
+  probe.style.cssText = "position:absolute;width:0;height:0;overflow:hidden;";
+  probe.style.color = `var(--${name})`;
+  document.body.appendChild(probe);
+  const resolved = getComputedStyle(probe).color;
+  probe.remove();
+  return /^rgba?\(/i.test(resolved) ? resolved : null;
+}
+
+function parseRgba(value: string): [number, number, number, number] | null {
+  const m = value.trim().match(/^rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)(?:\s*[,/]\s*([\d.]+%?))?\s*\)$/i);
+  if (!m) return null;
+  const a = m[4] == null ? 1 : Number.parseFloat(m[4]) / (m[4].endsWith("%") ? 100 : 1);
+  return [Number(m[1]), Number(m[2]), Number(m[3]), Math.min(1, Math.max(0, a))];
+}
+
+function hex2(n: number): string {
+  return Math.min(255, Math.max(0, Math.round(n))).toString(16).padStart(2, "0");
+}
+
+/** rgb/rgba → #rrggbb；alpha < 1 时按底色拍平（Monaco 主题色只收实色） */
+function toHex(value: string | null, bg: [number, number, number]): string | null {
+  if (!value) return null;
+  if (/^#[0-9a-f]{6}$/i.test(value)) return value.toLowerCase();
+  if (/^#[0-9a-f]{3}$/i.test(value)) {
+    const h = value.slice(1);
+    return `#${h[0]}${h[0]}${h[1]}${h[1]}${h[2]}${h[2]}`.toLowerCase();
+  }
+  const p = parseRgba(value);
+  if (!p) return null;
+  const [r, g, b, a] = p;
+  return `#${hex2(r * a + bg[0] * (1 - a))}${hex2(g * a + bg[1] * (1 - a))}${hex2(b * a + bg[2] * (1 - a))}`;
+}
+
+function hash(text: string): string {
+  let h = 5381;
+  for (let i = 0; i < text.length; i++) h = ((h << 5) + h) ^ text.charCodeAt(i);
+  return (h >>> 0).toString(36);
+}
+
+interface ThemeSpec {
+  name: string;
+  base: Base;
+  rules: MonacoEditorApi.ITokenThemeRule[];
+  colors: Record<string, string>;
+}
+
+/** 从生效 CSS 变量构建 Monaco 主题；关键字缺失到无法成立 → null（回落内置） */
+function buildThemeSpec(): ThemeSpec | null {
+  const base = baseTheme();
+  const bgRaw = resolveCssColor("bg-window-solid") ?? resolveCssColor("bg-window") ?? resolveCssColor("bg-card-solid");
+  const fgRaw = resolveCssColor("text-primary");
+  if (!bgRaw || !fgRaw) return null;
+  const bgRgb = parseRgba(bgRaw);
+  const bg: [number, number, number] = bgRgb ? [bgRgb[0], bgRgb[1], bgRgb[2]] : base === "vs-dark" ? [0, 0, 0] : [255, 255, 255];
+  const colors: Record<string, string> = {};
+  const put = (key: string, v: string | null) => { const hex = toHex(v, bg); if (hex) colors[key] = hex; };
+
+  put("editor.background", bgRaw);
+  put("editor.foreground", fgRaw);
+  put("editorLineNumber.foreground", resolveCssColor("text-muted") ?? resolveCssColor("text-secondary"));
+  put("editorLineNumber.activeForeground", fgRaw);
+  put("editorCursor.foreground", resolveCssColor("accent"));
+  put("editor.selectionBackground", resolveCssColor("bg-selection"));
+  put("editor.inactiveSelectionBackground", resolveCssColor("bg-selection"));
+  put("editor.lineHighlightBackground", resolveCssColor("bg-input") ?? resolveCssColor("bg-card"));
+  put("editorWidget.background", resolveCssColor("bg-card-solid") ?? bgRaw);
+  put("editorWidget.border", resolveCssColor("border"));
+  put("editorSuggestWidget.background", resolveCssColor("bg-card-solid") ?? bgRaw);
+  put("editorSuggestWidget.border", resolveCssColor("border"));
+  put("editorHoverWidget.background", resolveCssColor("bg-card-solid") ?? bgRaw);
+  put("editorHoverWidget.border", resolveCssColor("border"));
+  put("editorIndentGuide.background1", resolveCssColor("border"));
+  put("editorIndentGuide.activeBackground1", resolveCssColor("text-muted") ?? resolveCssColor("border"));
+  put("editorGutter.background", bgRaw);
+
+  if (!colors["editor.background"] || !colors["editor.foreground"]) return null;
+  const name = `ldk-${hash(JSON.stringify({ base, colors }))}`;
+  return { name, base, rules: base === "vs-dark" ? DARK_TOKEN_RULES : LIGHT_TOKEN_RULES, colors };
+}
+
+function defineThemeSafe(monaco: MonacoNs, spec: ThemeSpec): boolean {
+  if (defined.has(spec.name)) return true;
+  try {
+    monaco.editor.defineTheme(spec.name, {
+      base: spec.base,
+      inherit: true,
+      rules: spec.rules,
+      colors: spec.colors,
+    });
+    defined.add(spec.name);
+    return true;
+  } catch {
+    // 已定义过（同名）或运行时不接受——退回内置，绝不留下未注册的主题名
+    defined.add(spec.name);
+    const list = (monaco.editor as unknown as { getColorThemes?: () => Array<{ id: string }> }).getColorThemes?.() ?? [];
+    return list.some((t) => t.id === spec.name);
   }
 }
 
+function applyToEditors(monaco: MonacoNs, theme: string): void {
+  const editors = monaco.editor.getEditors?.() ?? [];
+  for (const ed of editors) {
+    try { (ed as MonacoEditorApi.IStandaloneCodeEditor).updateOptions({ theme }); } catch { /* editor 已销毁 */ }
+  }
+  for (const ed of diffEditors) {
+    try { ed.updateOptions({ theme }); } catch { diffEditors.delete(ed); }
+  }
+}
+
+/** 当前应使用的 Monaco 主题名——供 editor.create() 初始 options（必须已 define 过） */
+export function getMonacoThemeName(): string {
+  return currentThemeName ?? baseTheme();
+}
+
+/** 注册 DiffEditor——`getEditors()` 只返回 standalone code editor，DiffEditor 必须单独更新 */
+export function registerDiffEditor(editor: MonacoEditorApi.IStandaloneDiffEditor): () => void {
+  diffEditors.add(editor as unknown as { updateOptions(options: Record<string, unknown>): void });
+  return () => { diffEditors.delete(editor); };
+}
+
+export function syncMonacoTheme(monaco: MonacoNs): void {
+  const base = baseTheme();
+  // 旧防线：先确保内置主题可用（loadThemes:true 已注册；这里再兜一层）
+  const spec = buildThemeSpec();
+  let theme: string = base;
+  if (spec && defineThemeSafe(monaco, spec)) theme = spec.name;
+  currentThemeName = theme;
+  // 路径 1：全局 setTheme（通知 VS Code service 层；异步管道可能慢）
+  monaco.editor.setTheme(theme);
+  // 路径 2：实例级 updateOptions——绕过 StandaloneWorkbenchThemeService 异步竞态
+  applyToEditors(monaco, theme);
+}
+
 export function subscribeThemeSync(monacoNsRef: { readonly current: MonacoNs | null }): () => void {
-  // E5.5#7 Bug B fix：用 window.linkdesk.events 替代 CoreEvents.onDidChangeTheme。
-  // 多 WebView 下 CoreEvents 是隔离实例——壳侧主题变更不会触发编辑器回调。
-  // theme:changed 通过 IpcBridge.broadcast → plugin:push → events.on 正确跨越 WebView 边界。
+  // E5.5#7 Bug B fix：必须走 window.linkdesk.events（多 WebView 下 CoreEvents 是隔离实例）。
+  // 2026-11-24：accent:changed 也要重算——光标/选区/keyword 受有效强调色影响。
   const lk = window.linkdesk;
-  return lk?.events?.on?.("theme:changed", () => {
-    if (monacoNsRef.current) {
-      syncMonacoTheme(monacoNsRef.current);
-    }
+  const offTheme = lk?.events?.on?.("theme:changed", () => {
+    if (monacoNsRef.current) syncMonacoTheme(monacoNsRef.current);
   }) ?? (() => {});
+  const offAccent = lk?.events?.on?.("accent:changed", () => {
+    if (monacoNsRef.current) syncMonacoTheme(monacoNsRef.current);
+  }) ?? (() => {});
+  return () => { offTheme(); offAccent(); };
 }
