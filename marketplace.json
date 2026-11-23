@@ -1,31 +1,33 @@
 {
   "version": "1",
-  "updatedAt": "2026-11-20T11:47:02.736Z",
+  "updatedAt": "2026-11-23T04:58:07.768Z",
   "plugins": [
     {
       "id": "editor",
       "name": "编辑器",
-      "version": "1.0.26",
+      "version": "1.0.27",
       "description": "Monaco 代码编辑器——语法高亮、智能提示、Diff 对比",
       "author": {
-        "name": "官方"
+        "name": "Encaron"
       },
-      "icon": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.26/resources/icon.svg",
+      "icon": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.27/resources/icon.svg",
       "iconSource": "url",
-      "cover": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/HEAD/resources/cover.svg",
-      "screenshots": [
-        "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/HEAD/resources/cover.svg"
-      ],
       "minAppVersion": "0.2.13",
       "category": "development",
       "categories": [
         "code-editing"
       ],
-      "readmeUrl": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.26/README.md",
-      "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.26/editor.linkdesk-plugin",
-      "size": 8658562,
-      "publishedAt": "2026-11-20T11:47:02.736Z",
+      "readmeUrl": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.27/README.md",
+      "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.27/editor.linkdesk-plugin",
+      "size": 8658403,
+      "publishedAt": "2026-11-23T04:58:07.768Z",
       "versions": [
+        {
+          "version": "1.0.27",
+          "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.27/editor.linkdesk-plugin",
+          "publishedAt": "2026-11-23T04:58:07.768Z",
+          "changelog": "- **「语言服务器正在启动——请稍候再试」改底部轻 Toast**：启动期的「等一等」不再是铃铛里的一条留档；「语言支持不可用——无法跳转到定义」仍走铃铛（失败需回看）。\n- 旧壳（< 0.2.55）没有 `toasts` 面时自动回退通知面板，提示不消失。"
+        },
         {
           "version": "1.0.26",
           "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.26/editor.linkdesk-plugin",
@@ -53,8 +55,7 @@
         {
           "version": "1.0.22",
           "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.22/editor.linkdesk-plugin",
-          "publishedAt": "2026-10-05T02:03:19.601Z",
-          "changelog": "- **「打开方式…」钮上屏（T1 特性开关合龙）**：1.0.20 起二进制提示块里的「打开方式…」钮被 `OPEN_WITH_WIRED=false` 钉着不显示——当时 file-tree 的同名命令还是占位（真机撞出死钮的第 1 波教训）。现在 file-tree 1.0.27 已真接选择器（列全部 handler＋仅此一次/设为默认/恢复自动），本版把开关翻 true，二进制文件标签内的「打开方式…」从此可用。命令以裸 filePath 字符串首参调用，无文件/旧宿主时命令自身 no-op，不留死响应。\n- **读数**：`npm run verify` 九段全绿 · `npm test` 78 例全绿。"
+          "publishedAt": "2026-10-05T02:03:19.601Z"
         },
         {
           "version": "1.0.21",
