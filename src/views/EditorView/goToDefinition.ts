@@ -15,6 +15,25 @@ import type { Monaco, MonacoEditor, TabsApi } from "./types";
 
 const lk = window.linkdesk;
 
+/** 壳轻 Toast 的窄结构（只用到 show；旧壳无此面） */
+interface ToastsLike {
+  show(options: { message: string; severity?: "info" | "success" | "warning"; source?: string }): Promise<unknown>;
+}
+
+/**
+ * 路过型提示优先轻 Toast；旧壳（< 0.2.55）无 `toasts` 面 ⇒ 回退通知面板。
+ * ⛔ 失败/警告不走这里——它们需要留档，直接 `notifications.show`。
+ */
+function showHint(message: string): void {
+  const toasts = (lk as unknown as { toasts?: ToastsLike } | undefined)?.toasts;
+  if (toasts?.show) {
+    void toasts.show({ message, severity: "info", source: "editor" }).catch(() => {});
+    return;
+  }
+  const show = lk?.notifications?.show;
+  if (show) void show(message, { type: "info", source: "editor" }).catch(() => {});
+}
+
 export function registerGoToDefinition(args: {
   monaco: Monaco;
   editor: MonacoEditor;
@@ -54,12 +73,15 @@ export function registerGoToDefinition(args: {
           // 无 LSP 的语言（该语言本来就没配语言服务器）不开腔——那不是故障。
           const blocked = takeBlockedNotice(langId);
           if (blocked) {
-            void lk.notifications.show(
-              blocked === "starting"
-                ? i18n.t("语言服务器正在启动——请稍候再试")
-                : i18n.t("语言支持不可用——无法跳转到定义"),
-              { type: blocked === "starting" ? "info" : "warning", source: "editor" },
-            ).catch(() => {});
+            if (blocked === "starting") {
+              // 启动中的「请稍候」是过路提示 ⇒ 轻 toast；「不可用」是失败 ⇒ 留铃铛
+              showHint(i18n.t("语言服务器正在启动——请稍候再试"));
+            } else {
+              void lk.notifications.show(
+                i18n.t("语言支持不可用——无法跳转到定义"),
+                { type: "warning", source: "editor" },
+              ).catch(() => {});
+            }
           }
           return;
         }

@@ -2,7 +2,7 @@
   "$schema": "./node_modules/@linkdesk/plugin-sdk/schemas/plugin.schema.json",
   "pluginId": "editor",
   "name": "编辑器",
-  "version": "1.0.26",
+  "version": "1.0.27",
   "category": "development",
   "categories": ["code-editing"],
   "minAppVersion": "0.2.13",
