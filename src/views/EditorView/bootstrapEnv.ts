@@ -12,7 +12,7 @@
 import type { MutableRefObject } from "react";
 import { bootstrapMonaco, getMonaco } from "../../services/monaco-bootstrap";
 import { setupTypeScriptEnv, scanWorkspaceForTypeScript } from "../../services/ts-intelligence";
-import { syncMonacoTheme, subscribeThemeSync } from "../../services/theme-sync";
+import { syncMonacoTheme, subscribeThemeSync, watchEditorCreation } from "../../services/theme-sync";
 import type { Monaco, TabsApi } from "./types";
 
 const lk = window.linkdesk;
@@ -24,6 +24,12 @@ export async function bootstrapEditorEnv(args: {
   tabsRef: MutableRefObject<TabsApi | undefined>;
 }): Promise<{ monaco: Monaco; themeSyncUnsub: () => void } | null> {
   const { container, disposed, monacoRef, tabsRef } = args;
+
+  // 2026-11-24（防线 7）：**先订阅主题广播，再等 monaco**——壳的首次 theme:changed 可能早于
+  // 插件视图挂载/加载完成，晚订阅就永远收不到那份 token（订阅本身不依赖 monaco：ref 为空时只存载荷）。
+  const offThemeEvents = subscribeThemeSync(monacoRef);
+  let offEditorWatch: () => void = () => {};
+  const themeSyncUnsub = () => { offThemeEvents(); offEditorWatch(); };
 
   // E5#11i：WebView 初始 0×0→等 bounds（resize event 触发 layout）
   if (container.clientWidth === 0 || container.clientHeight === 0) {
@@ -48,10 +54,10 @@ export async function bootstrapEditorEnv(args: {
   // 2. 取 monaco（E5.8#24.8 护栏：getMonaco 保证补丁完成 + 已配置好 workers）
   const monaco = await getMonaco();
 
-  // 3. 主题同步——先设 monacoRef，再注册订阅，确保回调中 ref 已就位
-  syncMonacoTheme(monaco);
+  // 3. 主题同步——先设 monacoRef（订阅已在步骤 0 挂好），再补应用 + 盯住后续新建的编辑器
   monacoRef.current = monaco;
-  const themeSyncUnsub = subscribeThemeSync(monacoRef);
+  syncMonacoTheme(monaco);
+  offEditorWatch = watchEditorCreation(monaco);
 
   // 4. TS compilerOptions + 影子 model 扫描
   setupTypeScriptEnv(monaco);
