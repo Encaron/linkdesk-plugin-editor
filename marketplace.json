@@ -1,31 +1,37 @@
 {
   "version": "1",
-  "updatedAt": "2026-11-23T16:40:02.922Z",
+  "updatedAt": "2026-11-23T18:14:22.799Z",
   "plugins": [
     {
       "id": "editor",
       "name": "编辑器",
-      "version": "1.0.28",
+      "version": "1.0.30",
       "description": "Monaco 代码编辑器——语法高亮、智能提示、Diff 对比",
       "author": {
         "name": "Encaron"
       },
-      "icon": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.28/resources/icon.svg",
+      "icon": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.30/resources/icon.svg",
       "iconSource": "url",
       "minAppVersion": "0.2.13",
       "category": "development",
       "categories": [
         "code-editing"
       ],
-      "readmeUrl": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.28/README.md",
+      "readmeUrl": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.30/README.md",
       "readmeLocales": {
-        "zh": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.28/README.md",
-        "en": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.28/docs/readme/en.md"
+        "zh": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.30/README.md",
+        "en": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.30/docs/readme/en.md"
       },
-      "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.28/editor.linkdesk-plugin",
-      "size": 8660322,
-      "publishedAt": "2026-11-23T16:40:02.922Z",
+      "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.30/editor.linkdesk-plugin",
+      "size": 8663047,
+      "publishedAt": "2026-11-23T18:14:22.799Z",
       "versions": [
+        {
+          "version": "1.0.30",
+          "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.30/editor.linkdesk-plugin",
+          "publishedAt": "2026-11-23T18:14:22.799Z",
+          "changelog": "- **修「编辑器里代码颜色没变」**：主题色值改从 `theme:changed` **广播载荷**取（DOM 自定义属性只作兜底）——插件视图挂载时机不可控，只读 DOM 会静默读到空值，之前就停在 Monaco 原厂 vs/vs-dark。订阅也提前到 monaco 加载之前；建不出主题会重试（10×150ms），新建的编辑器由 `onDidCreateEditor` 补应用，不再静默停在原厂配色。\n- **修「最边边那条灰更黑」**：Monaco 自带的灰色件全部 token 化——滚动条滑块/悬停/按下、概览标尺边框、minimap 底与高亮、缩进线、空白字符、括号配对、查找高亮、诊断色、悬浮件投影。滚动条现在跟主题的 `scrollbar-thumb`（半透明保留 alpha），不再用原厂中性灰 `#79797966`。\n- **编辑器底色改成卡片面**（`bg-card-solid` → `surface-reading` → 窗口底），并逐个候选做对比度校验（<4.5 退下一个）：旧壳把「白色 10% 提亮层」算成纯白时，暗色主题不会把编辑器刷白。\n- 回归：`src/__tests__/theme-sync.test.ts` 4 例（DOM 取色 / 载荷优先 / 纯白卡片退窗口底 / 无 token 回落）。"
+        },
         {
           "version": "1.0.28",
           "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.28/editor.linkdesk-plugin",
@@ -53,8 +59,7 @@
         {
           "version": "1.0.24",
           "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.24/editor.linkdesk-plugin",
-          "publishedAt": "2026-10-05T19:03:47.665Z",
-          "changelog": "- **二进制文件提示里那句说明，现在跟真的显示出来的按钮对得上了**：以前不论按钮在不在，都写「可右键选择打开方式或在市场搜索阅读器」——而在**没有任何插件认领这类文件**的时候，右键里那一项其实是**隐藏的**，这句话就是假话。现在按两颗按钮**实际的探测结果**选文案：两枚都在 / 只剩「打开方式…」/ 只剩「在市场搜索阅读器」/ 一枚都没有——四种说法各写各的。\n- **同一处还有时序问题**：以前提示是**先照「两枚按钮都在」说一句**，探测回来后按钮可能消失、话却已经说出去了。现在**等两个探测都落定**再弹这一句，不会再出现「提示里写了、界面上却没有」。\n- 内部：文案选键抽成纯函数（`binaryNoticeToastKey`）＋单测钉住四种组合（并逐句断言这四句话里**不出现「右键」**）；本插件字典新增四条整句译名。"
+          "publishedAt": "2026-10-05T19:03:47.665Z"
         },
         {
           "version": "1.0.23",
