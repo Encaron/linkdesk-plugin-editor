@@ -160,5 +160,6 @@
   "INI": "INI",
   "Config": "Config",
   "Text": "Text",
-  "Log": "Log"
+  "Log": "Log",
+  "要强制按文本打开的文件路径（缺省 = 唯一处于二进制提示页的标签）": "File path to force-open as text (default: the only tab showing the binary notice)"
 }

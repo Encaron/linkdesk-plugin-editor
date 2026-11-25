@@ -2,7 +2,7 @@
   "$schema": "./node_modules/@linkdesk/plugin-sdk/schemas/plugin.schema.json",
   "pluginId": "editor",
   "name": "编辑器",
-  "version": "1.0.31",
+  "version": "1.0.32",
   "category": "development",
   "categories": [
     "code-editing"
@@ -35,7 +35,14 @@
           "filePath": "C:/demo/a.bin"
         },
         "title": "仍旧以该编辑器插件打开",
-        "description": "把处于「此文件无法作为文本显示」提示页的二进制文件按文本强制打开：乱码照实显示、可编辑，保存前会确认一次（写回会用文本内容覆盖原文件）。参数 { filePath } 可选——不给时取唯一处于提示页的标签；同时有多个提示页标签时必须给 filePath。"
+        "description": "把处于「此文件无法作为文本显示」提示页的二进制文件按文本强制打开：乱码照实显示、可编辑，保存前会确认一次（写回会用文本内容覆盖原文件）。参数 { filePath } 可选——不给时取唯一处于提示页的标签；同时有多个提示页标签时必须给 filePath。",
+        "params": [
+          {
+            "name": "filePath",
+            "type": "string",
+            "description": "要强制按文本打开的文件路径（缺省 = 唯一处于二进制提示页的标签）"
+          }
+        ]
       }
     ],
     "configuration": {

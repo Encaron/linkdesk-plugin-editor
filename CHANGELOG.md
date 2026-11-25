@@ -1,5 +1,9 @@
 # 更新日志
 
+## v1.0.32（2026-11-25）
+
+- 命令契约门禁：`editor.forceOpenAsText` 补 `params`（`filePath`），example 键与声明一致（行为不变）。
+
 ## v1.0.31（2026-11-25）
 
 - AI 门外契约补齐：命令声明补 `risk`/`activation`/`returns`/`example`。
