@@ -1,31 +1,38 @@
 {
   "version": "1",
-  "updatedAt": "2026-11-24T22:02:00.233Z",
+  "updatedAt": "2026-11-25T16:54:43.762Z",
   "plugins": [
     {
       "id": "editor",
       "name": "编辑器",
-      "version": "1.0.31",
+      "version": "1.0.32",
       "description": "Monaco 代码编辑器——语法高亮、智能提示、Diff 对比",
       "author": {
         "name": "Encaron"
       },
-      "icon": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.31/resources/icon.svg",
+      "icon": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.32/resources/icon.svg",
       "iconSource": "url",
       "minAppVersion": "0.2.13",
       "category": "development",
       "categories": [
         "code-editing"
       ],
-      "readmeUrl": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.31/README.md",
+      "readmeUrl": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.32/README.md",
       "readmeLocales": {
-        "zh": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.31/README.md",
-        "en": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.31/docs/readme/en.md"
+        "zh": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.32/README.md",
+        "en": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.32/docs/readme/en.md"
       },
-      "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.31/editor.linkdesk-plugin",
-      "size": 8664498,
-      "publishedAt": "2026-11-24T22:02:00.233Z",
+      "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.32/editor.linkdesk-plugin",
+      "size": 8664521,
+      "publishedAt": "2026-11-25T16:54:43.762Z",
       "versions": [
+        {
+          "version": "1.0.32",
+          "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.32/editor.linkdesk-plugin",
+          "publishedAt": "2026-11-25T16:54:43.762Z",
+          "changelog": "- 命令契约门禁：`editor.forceOpenAsText` 补 `params`（`filePath`），example 键与声明一致（行为不变）。",
+          "sha256": "ea822b7c2ca47c3e377251e3f75bd07cda55934361608d79c37ad68ff23605eb"
+        },
         {
           "version": "1.0.31",
           "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.31/editor.linkdesk-plugin",
@@ -54,8 +61,7 @@
         {
           "version": "1.0.26",
           "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.26/editor.linkdesk-plugin",
-          "publishedAt": "2026-11-20T11:47:02.736Z",
-          "changelog": "- **分类声明（R4-2.8/2.9）**：`plugin.json` 顶层补 `category: \"development\"` ＋ `categories: [\"code-editing\"]`——商店分类抽屉归位，随本次发版进入官方目录条目。"
+          "publishedAt": "2026-11-20T11:47:02.736Z"
         },
         {
           "version": "1.0.25",
