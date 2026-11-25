@@ -1,31 +1,38 @@
 {
   "version": "1",
-  "updatedAt": "2026-11-25T16:54:43.762Z",
+  "updatedAt": "2026-11-25T17:57:13.832Z",
   "plugins": [
     {
       "id": "editor",
       "name": "编辑器",
-      "version": "1.0.32",
+      "version": "1.0.33",
       "description": "Monaco 代码编辑器——语法高亮、智能提示、Diff 对比",
       "author": {
         "name": "Encaron"
       },
-      "icon": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.32/resources/icon.svg",
+      "icon": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.33/resources/icon.svg",
       "iconSource": "url",
       "minAppVersion": "0.2.13",
       "category": "development",
       "categories": [
         "code-editing"
       ],
-      "readmeUrl": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.32/README.md",
+      "readmeUrl": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.33/README.md",
       "readmeLocales": {
-        "zh": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.32/README.md",
-        "en": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.32/docs/readme/en.md"
+        "zh": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.33/README.md",
+        "en": "https://raw.githubusercontent.com/Encaron/linkdesk-plugin-editor/v1.0.33/docs/readme/en.md"
       },
-      "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.32/editor.linkdesk-plugin",
-      "size": 8664521,
-      "publishedAt": "2026-11-25T16:54:43.762Z",
+      "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.33/editor.linkdesk-plugin",
+      "size": 8663100,
+      "publishedAt": "2026-11-25T17:57:13.832Z",
       "versions": [
+        {
+          "version": "1.0.33",
+          "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.33/editor.linkdesk-plugin",
+          "publishedAt": "2026-11-25T17:57:13.832Z",
+          "changelog": "- **`core: true` → `essential: true`**（插件语义二分，硬切无兼容）：`essential` 只表示「UI 不显示卸载入口」，与「随包出厂」（lock `seed`）和「能否更新」（住所 `updatable`）彻底分家；旧 `core` 已退役。\n- 随 `@linkdesk/plugin-sdk` ^0.1.122（schema 删 core 加 essential）。\n- 行为零变化：本插件在详情/列表依旧不显示卸载按钮。",
+          "sha256": "eab7468adb05c5eb48a9ee9551c78bd55fd689e9105e6bc4bb5e0874e21fbecd"
+        },
         {
           "version": "1.0.32",
           "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.32/editor.linkdesk-plugin",
@@ -55,8 +62,7 @@
         {
           "version": "1.0.27",
           "downloadUrl": "https://github.com/Encaron/linkdesk-plugin-editor/releases/download/v1.0.27/editor.linkdesk-plugin",
-          "publishedAt": "2026-11-23T04:58:07.768Z",
-          "changelog": "- **「语言服务器正在启动——请稍候再试」改底部轻 Toast**：启动期的「等一等」不再是铃铛里的一条留档；「语言支持不可用——无法跳转到定义」仍走铃铛（失败需回看）。\n- 旧壳（< 0.2.55）没有 `toasts` 面时自动回退通知面板，提示不消失。"
+          "publishedAt": "2026-11-23T04:58:07.768Z"
         },
         {
           "version": "1.0.26",
