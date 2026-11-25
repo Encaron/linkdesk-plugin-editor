@@ -2,7 +2,7 @@
   "$schema": "./node_modules/@linkdesk/plugin-sdk/schemas/plugin.schema.json",
   "pluginId": "editor",
   "name": "编辑器",
-  "version": "1.0.32",
+  "version": "1.0.33",
   "category": "development",
   "categories": [
     "code-editing"
@@ -12,7 +12,6 @@
   "description": "Monaco 代码编辑器——语法高亮、智能提示、Diff 对比",
   "author": "Encaron",
   "distribution": "builtin",
-  "core": true,
   "entry": "src/index.tsx",
   "appearsIn": {
     "tabBar": true
@@ -579,5 +578,6 @@
       "zh": "README.md",
       "en": "docs/readme/en.md"
     }
-  }
+  },
+  "essential": true
 }
